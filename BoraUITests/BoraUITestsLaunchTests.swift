@@ -9,6 +9,8 @@ import XCTest
 
 final class BoraUITestsLaunchTests: XCTestCase {
 
+    // Overrides XCTestCase's `class var`, can't be `static`.
+    // swiftlint:disable:next static_over_final_class
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
     }
