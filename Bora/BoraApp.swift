@@ -11,7 +11,7 @@ import SwiftUI
 struct BoraApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootCoordinatorView(dependencies: .live)
         }
     }
 }
