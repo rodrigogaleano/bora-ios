@@ -1,186 +1,582 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Planning" : {
+    "Configure by" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Planning" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Planificación" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Planejamento" } }
-      }
-    },
-    "Route" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Route" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ruta" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Rota" } }
-      }
-    },
-    "Execution" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Execution" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ejecución" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Execução" } }
-      }
-    },
-    "Results" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Results" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Resultados" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Resultados" } }
-      }
-    },
-    "Goal" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Goal" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Meta" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Meta" } }
-      }
-    },
-    "Type" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Type" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tipo" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Tipo" } }
-      }
-    },
-    "Distance" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Distance" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Distancia" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Distância" } }
-      }
-    },
-    "Time" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Time" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tiempo" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Tempo" } }
-      }
-    },
-    "Free" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Free" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Libre" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Livre" } }
-      }
-    },
-    "Distance (m)" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Distance (m)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Distancia (m)" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Distância (m)" } }
-      }
-    },
-    "Counts" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Counts" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cuenta" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Considera" } }
-      }
-    },
-    "Total session" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Total session" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sesión total" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Sessão total" } }
-      }
-    },
-    "Run only" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Run only" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Solo carrera" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Só corrida" } }
-      }
-    },
-    "Duration (min)" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Duration (min)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Duración (min)" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Duração (min)" } }
-      }
-    },
-    "Warmup" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Warmup" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Calentamiento" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Aquecimento" } }
-      }
-    },
-    "HIIT" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "HIIT" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "HIIT" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "HIIT" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configure by"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar por"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar por"
+          }
+        }
       }
     },
     "Cooldown" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cooldown" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Enfriamiento" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Desaquecimento" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cooldown"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enfriamiento"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desaquecimento"
+          }
+        }
       }
     },
-    "Sets: %lld" : {
+    "Counts" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sets: %lld" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Series: %lld" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Séries: %lld" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Counts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuenta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Considera"
+          }
+        }
       }
     },
-    "Work (s)" : {
+    "Distance" : {
+      "extractionState" : "stale",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Work (s)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Trabajo (s)" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Trabalho (s)" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distancia"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distância"
+          }
+        }
       }
     },
-    "Rest (s)" : {
+    "Distance (m)" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rest (s)" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Descanso (s)" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Descanso (s)" } }
-      }
-    },
-    "Configure by" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Configure by" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Configurar por" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Configurar por" } }
-      }
-    },
-    "Next" : {
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Next" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Siguiente" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Avançar" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distance (m)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distancia (m)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distância (m)"
+          }
+        }
       }
     },
     "Done" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Done" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Finalizar" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Concluir" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concluir"
+          }
+        }
       }
     },
-    "Route Screen" : {
+    "Duration (min)" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Route Screen" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pantalla de Ruta" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Tela de Rota" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duration (min)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duración (min)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duração (min)"
+          }
+        }
+      }
+    },
+    "Execution" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Execution"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejecución"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Execução"
+          }
+        }
       }
     },
     "Execution Screen" : {
+      "extractionState" : "stale",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Execution Screen" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pantalla de Ejecución" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Tela de Execução" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Execution Screen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantalla de Ejecución"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tela de Execução"
+          }
+        }
+      }
+    },
+    "Free" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Libre"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Livre"
+          }
+        }
+      }
+    },
+    "Goal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta"
+          }
+        }
+      }
+    },
+    "HIIT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HIIT"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HIIT"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HIIT"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avançar"
+          }
+        }
+      }
+    },
+    "Planning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planning"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planificación"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planejamento"
+          }
+        }
+      }
+    },
+    "Rest (s)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rest (s)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descanso (s)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descanso (s)"
+          }
+        }
+      }
+    },
+    "Results" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Results"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resultados"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resultados"
+          }
+        }
       }
     },
     "Results Screen" : {
+      "extractionState" : "stale",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Results Screen" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pantalla de Resultados" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Tela de Resultados" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Results Screen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantalla de Resultados"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tela de Resultados"
+          }
+        }
+      }
+    },
+    "Route" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rota"
+          }
+        }
+      }
+    },
+    "Route Screen" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route Screen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pantalla de Ruta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tela de Rota"
+          }
+        }
+      }
+    },
+    "Run only" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run only"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo carrera"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Só corrida"
+          }
+        }
+      }
+    },
+    "Sets: %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sets: %lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series: %lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séries: %lld"
+          }
+        }
+      }
+    },
+    "Time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiempo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tempo"
+          }
+        }
+      }
+    },
+    "Total session" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total session"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión total"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessão total"
+          }
+        }
+      }
+    },
+    "Type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo"
+          }
+        }
+      }
+    },
+    "Warmup" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warmup"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calentamiento"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquecimento"
+          }
+        }
+      }
+    },
+    "Work (s)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work (s)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabajo (s)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabalho (s)"
+          }
+        }
       }
     }
   },
