@@ -23,14 +23,17 @@ struct RootCoordinatorView: View {
                     RouteView(
                         viewModel: RouteViewModel(
                             clock: dependencies.clock,
+                            locationProvider: dependencies.locationProvider,
                             plan: plan,
-                            onNext: { coordinator.push(.execution) }
+                            onNext: { plan, route in coordinator.push(.execution(plan, route)) }
                         )
                     )
-                case .execution:
+                case .execution(let plan, let route):
                     ExecutionView(
                         viewModel: ExecutionViewModel(
                             clock: dependencies.clock,
+                            plan: plan,
+                            route: route,
                             onNext: { coordinator.push(.results) }
                         )
                     )

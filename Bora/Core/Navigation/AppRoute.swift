@@ -1,5 +1,5 @@
 enum AppRoute: Hashable {
     case route(SessionPlan)
-    case execution
+    case execution(SessionPlan, PlannedRoute)
     case results
 }
