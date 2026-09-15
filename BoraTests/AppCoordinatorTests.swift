@@ -4,6 +4,7 @@ import Testing
 
 struct AppCoordinatorTests {
     private let plan = SessionPlan(goal: .free, warmup: nil, hiit: nil, cooldown: nil)
+    private let route = PlannedRoute(start: RouteCoordinate(latitude: 0, longitude: 0), outboundPoints: [])
 
     @Test func pushAppendsRoute() {
         let coordinator = AppCoordinator()
@@ -14,7 +15,7 @@ struct AppCoordinatorTests {
     @Test func popToRootClearsPath() {
         let coordinator = AppCoordinator()
         coordinator.push(.route(plan))
-        coordinator.push(.execution)
+        coordinator.push(.execution(plan, route))
         coordinator.popToRoot()
         #expect(coordinator.path.count == 0)
     }
