@@ -10,6 +10,7 @@ final class SystemLocationProvider: NSObject, LocationProviding {
     private let manager = CLLocationManager()
     private var continuation: CheckedContinuation<RouteCoordinate, Error>?
     private var isAwaitingAuthorization = false
+    private var updatesContinuation: AsyncStream<RouteCoordinate>.Continuation?
 
     override init() {
         super.init()
@@ -31,6 +32,29 @@ final class SystemLocationProvider: NSObject, LocationProviding {
                 resume(throwing: LocationError.authorizationDenied)
             }
         }
+    }
+
+    func startLocationUpdates() -> AsyncStream<RouteCoordinate> {
+        manager.allowsBackgroundLocationUpdates = true
+        manager.pausesLocationUpdatesAutomatically = false
+        manager.activityType = .fitness
+        if manager.authorizationStatus == .authorizedWhenInUse {
+            manager.requestAlwaysAuthorization()
+        }
+        manager.startUpdatingLocation()
+        return AsyncStream { continuation in
+            self.updatesContinuation = continuation
+            continuation.onTermination = { [weak self] _ in
+                self?.manager.stopUpdatingLocation()
+            }
+        }
+    }
+
+    func stopLocationUpdates() {
+        manager.stopUpdatingLocation()
+        manager.allowsBackgroundLocationUpdates = false
+        updatesContinuation?.finish()
+        updatesContinuation = nil
     }
 
     private func resume(returning coordinate: RouteCoordinate) {
@@ -65,7 +89,11 @@ extension SystemLocationProvider: CLLocationManagerDelegate {
             resume(throwing: LocationError.noLocationReturned)
             return
         }
-        resume(returning: RouteCoordinate(location.coordinate))
+        let coordinate = RouteCoordinate(location.coordinate)
+        if continuation != nil {
+            resume(returning: coordinate)
+        }
+        updatesContinuation?.yield(coordinate)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
