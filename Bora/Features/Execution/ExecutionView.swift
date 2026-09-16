@@ -10,7 +10,7 @@ struct ExecutionView: View {
     var body: some View {
         VStack(spacing: 20) {
             if viewModel.isShowingUpcomingTransitionBanner, let nextPhase = viewModel.nextPhase {
-                Label("Coming up: \(Self.title(for: nextPhase.kind))", systemImage: "arrow.right.circle")
+                Label("Coming up: \(nextPhase.kind.displayName)", systemImage: "arrow.right.circle")
                     .font(.subheadline)
                     .padding(10)
                     .frame(maxWidth: .infinity)
@@ -18,20 +18,22 @@ struct ExecutionView: View {
             }
 
             if let currentPhase = viewModel.currentPhase {
-                Text(Self.title(for: currentPhase.kind))
+                Text(currentPhase.kind.displayName)
                     .font(.title)
             }
 
-            Text(Self.formatted(viewModel.elapsedInPhase))
+            Text(RunFormatting.duration(viewModel.elapsedInPhase))
                 .font(.system(size: 48, weight: .semibold, design: .rounded).monospacedDigit())
 
             HStack(spacing: 24) {
                 metricTile(
                     title: "Distance",
-                    value: Measurement(value: viewModel.totalDistanceMeters, unit: UnitLength.meters)
-                        .formatted(.measurement(width: .abbreviated))
+                    value: RunFormatting.distance(meters: viewModel.totalDistanceMeters)
                 )
-                metricTile(title: "Pace", value: Self.paceLabel(viewModel.currentSpeedMetersPerSecond))
+                metricTile(
+                    title: "Pace",
+                    value: RunFormatting.pace(speedMetersPerSecond: viewModel.currentSpeedMetersPerSecond)
+                )
             }
 
             Spacer()
@@ -63,7 +65,7 @@ struct ExecutionView: View {
         .background(.regularMaterial)
     }
 
-    private func metricTile(title: String, value: String) -> some View {
+    private func metricTile(title: LocalizedStringKey, value: String) -> some View {
         VStack {
             Text(value)
                 .font(.title2.monospacedDigit())
@@ -72,32 +74,5 @@ struct ExecutionView: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
-    }
-
-    private static func title(for kind: RunPhase.Kind) -> String {
-        switch kind {
-        case .warmup:
-            return "Warmup"
-        case .work(let setIndex):
-            return "Work \(setIndex + 1)"
-        case .rest(let setIndex):
-            return "Rest \(setIndex + 1)"
-        case .freeRun:
-            return "Run"
-        case .cooldown:
-            return "Cooldown"
-        }
-    }
-
-    private static func formatted(_ interval: TimeInterval) -> String {
-        let totalSeconds = max(0, Int(interval))
-        return String(format: "%02d:%02d", totalSeconds / 60, totalSeconds % 60)
-    }
-
-    private static func paceLabel(_ speedMetersPerSecond: Double) -> String {
-        guard speedMetersPerSecond > 0 else { return "--:--" }
-        let secondsPerKm = 1000 / speedMetersPerSecond
-        let totalSeconds = Int(secondsPerKm)
-        return String(format: "%02d:%02d /km", totalSeconds / 60, totalSeconds % 60)
     }
 }
