@@ -50,7 +50,6 @@ struct RootCoordinatorView: View {
                 case .results(let metrics):
                     ResultsView(
                         viewModel: ResultsViewModel(
-                            clock: dependencies.clock,
                             metrics: metrics,
                             onDone: { coordinator.popToRoot() }
                         )

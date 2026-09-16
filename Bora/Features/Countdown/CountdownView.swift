@@ -10,11 +10,11 @@ struct CountdownView: View {
     var body: some View {
         VStack(spacing: 24) {
             Spacer()
-            Text("\(viewModel.count)")
+            Text(viewModel.count, format: .number)
                 .font(.system(size: 96, weight: .bold, design: .rounded))
                 .monospacedDigit()
             Spacer()
-            Button("Cancelar") {
+            Button("Cancel") {
                 viewModel.cancel()
             }
         }
