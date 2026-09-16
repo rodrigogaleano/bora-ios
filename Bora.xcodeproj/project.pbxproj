@@ -400,6 +400,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Support/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Usamos sua localização em segundo plano para continuar registrando sua corrida mesmo com a tela bloqueada ou o app minimizado.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos sua localização para centralizar o mapa e sugerir o ponto de partida da sua rota.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -441,6 +443,8 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Support/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Usamos sua localização em segundo plano para continuar registrando sua corrida mesmo com a tela bloqueada ou o app minimizado.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos sua localização para centralizar o mapa e sugerir o ponto de partida da sua rota.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

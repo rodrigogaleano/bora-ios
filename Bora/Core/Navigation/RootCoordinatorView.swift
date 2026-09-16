@@ -25,22 +25,33 @@ struct RootCoordinatorView: View {
                             clock: dependencies.clock,
                             locationProvider: dependencies.locationProvider,
                             plan: plan,
-                            onNext: { plan, route in coordinator.push(.execution(plan, route)) }
+                            onNext: { plan, route in coordinator.push(.countdown(plan, route)) }
+                        )
+                    )
+                case .countdown(let plan, let route):
+                    CountdownView(
+                        viewModel: CountdownViewModel(
+                            plan: plan,
+                            route: route,
+                            onFinished: { plan, route in coordinator.push(.execution(plan, route)) },
+                            onCancel: { coordinator.pop() }
                         )
                     )
                 case .execution(let plan, let route):
                     ExecutionView(
                         viewModel: ExecutionViewModel(
                             clock: dependencies.clock,
+                            locationProvider: dependencies.locationProvider,
                             plan: plan,
                             route: route,
-                            onNext: { coordinator.push(.results) }
+                            onNext: { metrics in coordinator.push(.results(metrics)) }
                         )
                     )
-                case .results:
+                case .results(let metrics):
                     ResultsView(
                         viewModel: ResultsViewModel(
                             clock: dependencies.clock,
+                            metrics: metrics,
                             onDone: { coordinator.popToRoot() }
                         )
                     )
