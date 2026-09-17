@@ -7,7 +7,8 @@ struct CountdownViewModelTests {
 
     private func makeViewModel(
         cuePlayer: PreviewRunCuePlayer = PreviewRunCuePlayer(),
-        onFinished: @escaping (SessionPlan, PlannedRoute) -> Void = { _, _ in },
+        route: PlannedRoute? = nil,
+        onFinished: @escaping (SessionPlan, PlannedRoute?) -> Void = { _, _ in },
         onCancel: @escaping () -> Void = {}
     ) -> CountdownViewModel {
         CountdownViewModel(
@@ -30,7 +31,7 @@ struct CountdownViewModelTests {
     @Test func countReachesZeroInvokesOnFinishedWithPlanAndRoute() {
         var forwardedPlan: SessionPlan?
         var forwardedRoute: PlannedRoute?
-        let viewModel = makeViewModel(onFinished: { plan, route in
+        let viewModel = makeViewModel(route: route, onFinished: { plan, route in
             forwardedPlan = plan
             forwardedRoute = route
         })
@@ -43,6 +44,22 @@ struct CountdownViewModelTests {
         #expect(viewModel.count == 0)
         #expect(forwardedPlan == plan)
         #expect(forwardedRoute == route)
+    }
+
+    @Test func countdownWithoutARouteForwardsNil() {
+        var didFinish = false
+        var forwardedRoute: PlannedRoute?
+        let viewModel = makeViewModel(onFinished: { _, route in
+            didFinish = true
+            forwardedRoute = route
+        })
+
+        viewModel.tick()
+        viewModel.tick()
+        viewModel.tick()
+
+        #expect(didFinish)
+        #expect(forwardedRoute == nil)
     }
 
     @Test func cancelInvokesOnCancelAndReleasesAudio() {

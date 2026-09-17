@@ -10,6 +10,7 @@ struct ExecutionViewModelTests {
         clock: PreviewClock = PreviewClock(),
         cuePlayer: PreviewRunCuePlayer = PreviewRunCuePlayer(),
         settings: RunSettings = RunSettings(),
+        route: PlannedRoute? = nil,
         onNext: @escaping (SessionMetrics) -> Void = { _ in }
     ) -> ExecutionViewModel {
         ExecutionViewModel(
@@ -18,9 +19,25 @@ struct ExecutionViewModelTests {
             cuePlayer: cuePlayer,
             settings: settings,
             plan: plan,
-            route: route,
+            route: route ?? self.route,
             onNext: onNext
         )
+    }
+
+    @Test func runsWithoutAPlannedRoute() {
+        let plan = SessionPlan(goal: .free, warmup: .duration(60), hiit: nil, cooldown: nil)
+        let viewModel = ExecutionViewModel(
+            clock: PreviewClock(),
+            locationProvider: PreviewLocationProvider(delay: .zero),
+            cuePlayer: PreviewRunCuePlayer(),
+            settings: RunSettings(),
+            plan: plan,
+            route: nil,
+            onNext: { _ in }
+        )
+        viewModel.start()
+        #expect(viewModel.plannedRoute == nil)
+        #expect(viewModel.currentPhase?.kind == .warmup)
     }
 
     @Test func startInitializesFirstPhaseAsWarmupWhenPresent() {

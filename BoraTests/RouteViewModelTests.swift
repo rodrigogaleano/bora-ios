@@ -2,17 +2,15 @@ import Testing
 @testable import Bora
 
 struct RouteViewModelTests {
-    private let plan = SessionPlan(goal: .free, warmup: nil, hiit: nil, cooldown: nil)
-
     private func makeViewModel(
         error: Error? = nil,
-        onNext: @escaping (SessionPlan, PlannedRoute) -> Void = { _, _ in }
+        existingRoute: PlannedRoute? = nil,
+        onDone: @escaping (PlannedRoute) -> Void = { _ in }
     ) -> RouteViewModel {
         RouteViewModel(
-            clock: SystemClock(),
             locationProvider: PreviewLocationProvider(delay: .zero, error: error),
-            plan: plan,
-            onNext: onNext
+            existingRoute: existingRoute,
+            onDone: onDone
         )
     }
 
@@ -68,25 +66,37 @@ struct RouteViewModelTests {
         #expect(viewModel.isValid)
     }
 
-    @Test func nextForwardsPlanAndRouteWhenValid() async {
-        var forwardedPlan: SessionPlan?
+    @Test func nextForwardsTheRouteWhenValid() async {
         var forwardedRoute: PlannedRoute?
-        let viewModel = makeViewModel { plan, route in
-            forwardedPlan = plan
-            forwardedRoute = route
-        }
+        let viewModel = makeViewModel { route in forwardedRoute = route }
         await viewModel.requestInitialLocation()
         viewModel.addPoint(RouteCoordinate(latitude: 0, longitude: 0.001))
         viewModel.next()
-        #expect(forwardedPlan != nil)
-        #expect(forwardedRoute != nil)
+        #expect(forwardedRoute?.outboundPoints.count == 1)
     }
 
     @Test func nextDoesNothingWhenInvalid() async {
         var wasCalled = false
-        let viewModel = makeViewModel { _, _ in wasCalled = true }
+        let viewModel = makeViewModel { _ in wasCalled = true }
         await viewModel.requestInitialLocation()
         viewModel.next()
         #expect(!wasCalled)
+    }
+
+    @Test func existingRouteIsRestoredWithoutAskingForLocationAgain() async {
+        let existing = PlannedRoute(
+            start: RouteCoordinate(latitude: 10, longitude: 10),
+            outboundPoints: [RouteCoordinate(latitude: 10, longitude: 10.001)]
+        )
+        let viewModel = makeViewModel(error: SampleError(), existingRoute: existing)
+
+        #expect(viewModel.loadingState == .ready)
+
+        // The provider would fail, but a restored route must not be thrown away for a new fix.
+        await viewModel.requestInitialLocation()
+
+        #expect(viewModel.loadingState == .ready)
+        #expect(viewModel.start == existing.start)
+        #expect(viewModel.outboundPoints == existing.outboundPoints)
     }
 }

@@ -8,25 +8,27 @@ final class RouteViewModel {
         case failed
     }
 
-    private let clock: ClockProviding
     private let locationProvider: LocationProviding
-    let plan: SessionPlan
-    private let onNext: (SessionPlan, PlannedRoute) -> Void
+    private let onDone: (PlannedRoute) -> Void
 
     var loadingState: LoadingState = .loadingInitialFix
     var start: RouteCoordinate?
     var outboundPoints: [RouteCoordinate] = []
 
+    /// `existingRoute` reopens the screen on a route already drawn — editing it must not
+    /// start from a blank map.
     init(
-        clock: ClockProviding,
         locationProvider: LocationProviding,
-        plan: SessionPlan,
-        onNext: @escaping (SessionPlan, PlannedRoute) -> Void
+        existingRoute: PlannedRoute? = nil,
+        onDone: @escaping (PlannedRoute) -> Void
     ) {
-        self.clock = clock
         self.locationProvider = locationProvider
-        self.plan = plan
-        self.onNext = onNext
+        self.onDone = onDone
+        if let existingRoute {
+            start = existingRoute.start
+            outboundPoints = existingRoute.outboundPoints
+            loadingState = .ready
+        }
     }
 
     var route: PlannedRoute? {
@@ -42,6 +44,7 @@ final class RouteViewModel {
     }
 
     func requestInitialLocation() async {
+        guard loadingState != .ready else { return }
         loadingState = .loadingInitialFix
         do {
             start = try await locationProvider.requestCurrentLocation()
@@ -66,6 +69,6 @@ final class RouteViewModel {
 
     func next() {
         guard let route, isValid else { return }
-        onNext(plan, route)
+        onDone(route)
     }
 }

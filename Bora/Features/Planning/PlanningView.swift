@@ -1,9 +1,7 @@
 import SwiftUI
 
 struct PlanningView: View {
-    @Environment(\.appDependencies) private var dependencies
     @State private var viewModel: PlanningViewModel
-    @State private var isShowingSettings = false
 
     init(viewModel: PlanningViewModel) {
         _viewModel = State(wrappedValue: viewModel)
@@ -23,24 +21,6 @@ struct PlanningView: View {
             .listRowBackground(Color.clear)
         }
         .navigationTitle("Planning")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isShowingSettings = true
-                } label: {
-                    Label("Settings", systemImage: "gearshape")
-                }
-            }
-        }
-        .sheet(isPresented: $isShowingSettings) {
-            SettingsView(
-                viewModel: SettingsViewModel(
-                    store: dependencies.settingsStore,
-                    cuePlayer: dependencies.cuePlayer,
-                    onDone: { isShowingSettings = false }
-                )
-            )
-        }
     }
 }
 
