@@ -17,7 +17,7 @@ final class ExecutionViewModel {
     private let cuePlayer: RunCueProviding
     private let settings: RunSettings
     let plan: SessionPlan
-    let plannedRoute: PlannedRoute
+    let plannedRoute: PlannedRoute?
     private let onNext: (SessionMetrics) -> Void
 
     private let phases: [RunPhase]
@@ -52,7 +52,7 @@ final class ExecutionViewModel {
         cuePlayer: RunCueProviding,
         settings: RunSettings,
         plan: SessionPlan,
-        route: PlannedRoute,
+        route: PlannedRoute?,
         onNext: @escaping (SessionMetrics) -> Void
     ) {
         self.clock = clock

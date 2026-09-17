@@ -14,6 +14,17 @@ enum RunFormatting {
         return String(format: "%02d:%02d", minutes, seconds)
     }
 
+    /// Loose duration for planned blocks, where "30s" and "5 min" read better than a clock.
+    static func compactDuration(_ interval: TimeInterval) -> String {
+        let seconds = max(0, interval.rounded())
+        if seconds < 60 {
+            return Measurement(value: seconds, unit: UnitDuration.seconds)
+                .formatted(.measurement(width: .abbreviated))
+        }
+        return Measurement(value: (seconds / 60).rounded(), unit: UnitDuration.minutes)
+            .formatted(.measurement(width: .abbreviated))
+    }
+
     static func pace(secondsPerKm: Double?) -> String {
         guard let secondsPerKm, secondsPerKm.isFinite, secondsPerKm > 0 else { return placeholder }
         let totalSeconds = Int(secondsPerKm)

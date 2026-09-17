@@ -1,6 +1,72 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ continuous" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ continuous"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sin intervalos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sem intervalos"
+          }
+        }
+      }
+    },
+    "%@ hard / %@ easy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hard / %@ easy"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ fuerte / %@ suave"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ forte / %@ leve"
+          }
+        }
+      }
+    },
+    "%@ with intervals" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ with intervals"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ con intervalos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ com intervalos"
+          }
+        }
+      }
+    },
     "%lld BPM" : {
       "localizations" : {
         "en" : {
@@ -41,6 +107,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Áudio"
+          }
+        }
+      }
+    },
+    "Audio and feedback" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio and feedback"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio y avisos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Áudio e feedback"
           }
         }
       }
@@ -397,6 +485,72 @@
         }
       }
     },
+    "Estimated %@ in total, %@ of it running." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated %@ in total, %@ of it running."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimado: %@ en total, %@ de carrera."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimado: %@ no total, %@ de corrida."
+          }
+        }
+      }
+    },
+    "Estimated %@ of running, %@ once the other blocks are added." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated %@ of running, %@ once the other blocks are added."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimado: %@ de carrera, %@ sumando los demás bloques."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimado: %@ de corrida, %@ somando os outros blocos."
+          }
+        }
+      }
+    },
+    "Estimated %@ · ≈ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated %@ · ≈ %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimado %@ · ≈ %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimado %@ · ≈ %@"
+          }
+        }
+      }
+    },
     "Execution" : {
       "localizations" : {
         "en" : {
@@ -485,6 +639,28 @@
         }
       }
     },
+    "Free session" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free session"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión libre"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessão livre"
+          }
+        }
+      }
+    },
     "Getting your location…" : {
       "localizations" : {
         "en" : {
@@ -525,6 +701,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meta"
+          }
+        }
+      }
+    },
+    "Goal: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta: %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta: %@"
+          }
+        }
+      }
+    },
+    "Goal: %@ — run only" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal: %@ — run only"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta: %@ — solo carrera"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta: %@ — só corrida"
+          }
+        }
+      }
+    },
+    "Goal: %@ — whole session" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goal: %@ — whole session"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta: %@ — sesión completa"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta: %@ — sessão inteira"
           }
         }
       }
@@ -573,6 +815,50 @@
         }
       }
     },
+    "Intervals" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intervals"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intervalos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intervalado"
+          }
+        }
+      }
+    },
+    "Intervals run to their block targets; the goal is just a reference." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intervals run to their block targets; the goal is just a reference."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los intervalos siguen los objetivos de cada bloque; la meta es solo una referencia."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O intervalado segue as metas de cada bloco; a meta geral é só referência."
+          }
+        }
+      }
+    },
     "Metronome" : {
       "localizations" : {
         "en" : {
@@ -613,6 +899,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avançar"
+          }
+        }
+      }
+    },
+    "No route set" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No route set"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin ruta definida"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma rota definida"
+          }
+        }
+      }
+    },
+    "Open-ended run" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open-ended run"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carrera sin meta"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrida sem meta"
+          }
+        }
+      }
+    },
+    "Out and back · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Out and back · %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ida y vuelta · %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ida e volta · %@"
           }
         }
       }
@@ -947,6 +1299,28 @@
         }
       }
     },
+    "Start run" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start run"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar entrenamiento"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar treino"
+          }
+        }
+      }
+    },
     "Stop" : {
       "localizations" : {
         "en" : {
@@ -965,6 +1339,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parar"
+          }
+        }
+      }
+    },
+    "Summary" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summary"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo"
           }
         }
       }

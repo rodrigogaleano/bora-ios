@@ -3,10 +3,10 @@ import Foundation
 @Observable
 final class CountdownViewModel {
     let plan: SessionPlan
-    let route: PlannedRoute
+    let route: PlannedRoute?
     private let cuePlayer: RunCueProviding
     private let settings: RunSettings
-    private let onFinished: (SessionPlan, PlannedRoute) -> Void
+    private let onFinished: (SessionPlan, PlannedRoute?) -> Void
     private let onCancel: () -> Void
 
     private(set) var count: Int
@@ -14,11 +14,11 @@ final class CountdownViewModel {
 
     init(
         plan: SessionPlan,
-        route: PlannedRoute,
+        route: PlannedRoute?,
         cuePlayer: RunCueProviding,
         settings: RunSettings,
         startingFrom: Int = 3,
-        onFinished: @escaping (SessionPlan, PlannedRoute) -> Void,
+        onFinished: @escaping (SessionPlan, PlannedRoute?) -> Void,
         onCancel: @escaping () -> Void
     ) {
         self.plan = plan

@@ -14,18 +14,16 @@ struct RootCoordinatorView: View {
             PlanningView(
                 viewModel: PlanningViewModel(
                     clock: dependencies.clock,
-                    onNext: { plan in coordinator.push(.route(plan)) }
+                    onNext: { plan in coordinator.push(.summary(plan)) }
                 )
             )
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
-                case .route(let plan):
-                    RouteView(
-                        viewModel: RouteViewModel(
-                            clock: dependencies.clock,
-                            locationProvider: dependencies.locationProvider,
+                case .summary(let plan):
+                    SummaryView(
+                        viewModel: SummaryViewModel(
                             plan: plan,
-                            onNext: { plan, route in coordinator.push(.countdown(plan, route)) }
+                            onStart: { plan, route in coordinator.push(.countdown(plan, route)) }
                         )
                     )
                 case .countdown(let plan, let route):
