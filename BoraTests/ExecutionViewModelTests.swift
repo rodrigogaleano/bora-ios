@@ -8,11 +8,15 @@ struct ExecutionViewModelTests {
     private func makeViewModel(
         plan: SessionPlan,
         clock: PreviewClock = PreviewClock(),
+        cuePlayer: PreviewRunCuePlayer = PreviewRunCuePlayer(),
+        settings: RunSettings = RunSettings(),
         onNext: @escaping (SessionMetrics) -> Void = { _ in }
     ) -> ExecutionViewModel {
         ExecutionViewModel(
             clock: clock,
             locationProvider: PreviewLocationProvider(delay: .zero),
+            cuePlayer: cuePlayer,
+            settings: settings,
             plan: plan,
             route: route,
             onNext: onNext
@@ -154,5 +158,99 @@ struct ExecutionViewModelTests {
         clock.advance(by: 2)
         viewModel.tick()
         #expect(viewModel.isShowingUpcomingTransitionBanner)
+    }
+
+    @Test func eachPhaseIsAnnouncedWhenItStarts() {
+        let clock = PreviewClock()
+        let cuePlayer = PreviewRunCuePlayer()
+        let plan = SessionPlan(
+            goal: .free,
+            warmup: .duration(10),
+            hiit: HIITPlan(sets: 1, work: .duration(10), rest: .duration(10)),
+            cooldown: nil
+        )
+        let viewModel = makeViewModel(plan: plan, clock: clock, cuePlayer: cuePlayer)
+        viewModel.beginTiming()
+
+        clock.advance(by: 10)
+        viewModel.tick()
+        clock.advance(by: 10)
+        viewModel.tick()
+
+        let announced = cuePlayer.playedCues.compactMap { cue -> String? in
+            if case .phaseStarted(let name) = cue { return name }
+            return nil
+        }
+        #expect(announced == ["Warmup", "Work 1", "Rest 1"])
+    }
+
+    @Test func upcomingTransitionIsAnnouncedOncePerPhase() {
+        let clock = PreviewClock()
+        let cuePlayer = PreviewRunCuePlayer()
+        let plan = SessionPlan(goal: .free, warmup: .duration(15), hiit: nil, cooldown: .duration(60))
+        let viewModel = makeViewModel(plan: plan, clock: clock, cuePlayer: cuePlayer)
+        viewModel.beginTiming()
+
+        // Five ticks inside the 10s warning window; only the first should announce.
+        clock.advance(by: 6)
+        for _ in 0..<5 {
+            viewModel.tick()
+            clock.advance(by: 0.5)
+        }
+
+        let warnings = cuePlayer.playedCues.filter { cue in
+            if case .upcomingTransition = cue { return true }
+            return false
+        }
+        #expect(warnings.count == 1)
+        #expect(warnings.first == .upcomingTransition("Run"))
+    }
+
+    @Test func metronomeStopsWhilePausedAndDuringRest() {
+        let clock = PreviewClock()
+        let cuePlayer = PreviewRunCuePlayer()
+        var settings = RunSettings()
+        settings.isMetronomeEnabled = true
+        let plan = SessionPlan(
+            goal: .free,
+            warmup: nil,
+            hiit: HIITPlan(sets: 1, work: .duration(10), rest: .duration(10)),
+            cooldown: nil
+        )
+        let viewModel = makeViewModel(plan: plan, clock: clock, cuePlayer: cuePlayer, settings: settings)
+        viewModel.beginTiming()
+        #expect(cuePlayer.metronomeBPM == settings.metronomeBPM)
+
+        viewModel.pause()
+        #expect(!cuePlayer.isMetronomeRunning)
+        viewModel.resume()
+        #expect(cuePlayer.isMetronomeRunning)
+
+        clock.advance(by: 10)
+        viewModel.tick()
+        #expect(viewModel.currentPhase?.kind == .rest(setIndex: 0))
+        #expect(!cuePlayer.isMetronomeRunning)
+    }
+
+    @Test func metronomeStaysSilentWhenDisabled() {
+        let cuePlayer = PreviewRunCuePlayer()
+        let plan = SessionPlan(goal: .free, warmup: .duration(60), hiit: nil, cooldown: nil)
+        let viewModel = makeViewModel(plan: plan, cuePlayer: cuePlayer)
+
+        viewModel.beginTiming()
+
+        #expect(!cuePlayer.isMetronomeRunning)
+    }
+
+    @Test func finishAnnouncesTheEndAndReleasesAudio() {
+        let cuePlayer = PreviewRunCuePlayer()
+        let plan = SessionPlan(goal: .free, warmup: .duration(600), hiit: nil, cooldown: nil)
+        let viewModel = makeViewModel(plan: plan, cuePlayer: cuePlayer)
+        viewModel.beginTiming()
+
+        viewModel.finish()
+
+        #expect(cuePlayer.playedCues.last == .runFinished)
+        #expect(cuePlayer.isTornDown)
     }
 }

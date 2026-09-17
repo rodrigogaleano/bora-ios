@@ -33,6 +33,8 @@ struct RootCoordinatorView: View {
                         viewModel: CountdownViewModel(
                             plan: plan,
                             route: route,
+                            cuePlayer: dependencies.cuePlayer,
+                            settings: dependencies.settingsStore.load(),
                             onFinished: { plan, route in coordinator.push(.execution(plan, route)) },
                             onCancel: { coordinator.pop() }
                         )
@@ -42,6 +44,8 @@ struct RootCoordinatorView: View {
                         viewModel: ExecutionViewModel(
                             clock: dependencies.clock,
                             locationProvider: dependencies.locationProvider,
+                            cuePlayer: dependencies.cuePlayer,
+                            settings: dependencies.settingsStore.load(),
                             plan: plan,
                             route: route,
                             onNext: { metrics in coordinator.push(.results(metrics)) }
