@@ -14,6 +14,8 @@ final class ExecutionViewModel {
 
     private let clock: ClockProviding
     private let locationProvider: LocationProviding
+    private let cuePlayer: RunCueProviding
+    private let settings: RunSettings
     let plan: SessionPlan
     let plannedRoute: PlannedRoute
     private let onNext: (SessionMetrics) -> Void
@@ -21,6 +23,7 @@ final class ExecutionViewModel {
     private let phases: [RunPhase]
     private(set) var currentPhaseIndex = 0
     private(set) var runState: RunState = .running
+    private var hasWarnedCurrentPhase = false
 
     private var sessionStartedAt: Date?
     private var phaseStartedAt: Date?
@@ -46,12 +49,16 @@ final class ExecutionViewModel {
     init(
         clock: ClockProviding,
         locationProvider: LocationProviding,
+        cuePlayer: RunCueProviding,
+        settings: RunSettings,
         plan: SessionPlan,
         route: PlannedRoute,
         onNext: @escaping (SessionMetrics) -> Void
     ) {
         self.clock = clock
         self.locationProvider = locationProvider
+        self.cuePlayer = cuePlayer
+        self.settings = settings
         self.plan = plan
         self.plannedRoute = route
         self.onNext = onNext
@@ -113,6 +120,9 @@ final class ExecutionViewModel {
         let now = clock.now
         sessionStartedAt = now
         phaseStartedAt = now
+
+        cuePlayer.prepare(settings: settings)
+        announceCurrentPhase()
     }
 
     func tick() {
@@ -120,6 +130,7 @@ final class ExecutionViewModel {
         let now = clock.now
         elapsedInPhase = now.timeIntervalSince(phaseStartedAt) - phasePausedAccumulatedSeconds
         elapsedTotal = now.timeIntervalSince(sessionStartedAt) - pausedAccumulatedSeconds
+        warnAboutUpcomingTransitionIfNeeded()
         if currentPhase.isComplete(
             elapsed: elapsedInPhase,
             phaseDistanceMeters: phaseDistanceMeters,
@@ -133,6 +144,7 @@ final class ExecutionViewModel {
         guard runState == .running else { return }
         runState = .paused
         pauseStartedAt = clock.now
+        cuePlayer.stopMetronome()
     }
 
     func resume() {
@@ -142,6 +154,7 @@ final class ExecutionViewModel {
         phasePausedAccumulatedSeconds += pausedDuration
         self.pauseStartedAt = nil
         runState = .running
+        startMetronomeIfNeeded()
     }
 
     func finish() {
@@ -177,6 +190,31 @@ final class ExecutionViewModel {
         elapsedInPhase = 0
         phaseDistanceMeters = 0
         phasePausedAccumulatedSeconds = 0
+        hasWarnedCurrentPhase = false
+        announceCurrentPhase()
+    }
+
+    private func announceCurrentPhase() {
+        guard let currentPhase else { return }
+        cuePlayer.play(.phaseStarted(currentPhase.kind.displayName))
+        startMetronomeIfNeeded()
+    }
+
+    /// The metronome is a cadence guide, so it stays quiet while the runner is resting.
+    private func startMetronomeIfNeeded() {
+        guard settings.isMetronomeEnabled, runState == .running, let currentPhase else { return }
+        if case .rest = currentPhase.kind {
+            cuePlayer.stopMetronome()
+            return
+        }
+        cuePlayer.startMetronome(bpm: settings.metronomeBPM)
+    }
+
+    /// Fires once per phase: `tick()` runs every 500 ms, and the warning window is 10 s wide.
+    private func warnAboutUpcomingTransitionIfNeeded() {
+        guard !hasWarnedCurrentPhase, isShowingUpcomingTransitionBanner, let nextPhase else { return }
+        hasWarnedCurrentPhase = true
+        cuePlayer.play(.upcomingTransition(nextPhase.kind.displayName))
     }
 
     private func recordSplit() {
@@ -207,6 +245,9 @@ final class ExecutionViewModel {
         tickTask?.cancel()
         locationTask?.cancel()
         locationProvider.stopLocationUpdates()
+        cuePlayer.play(.runFinished)
+        cuePlayer.stopMetronome()
+        cuePlayer.teardown()
 
         let averagePace = totalDistanceMeters > 0
             ? elapsedTotal / (totalDistanceMeters / 1000)

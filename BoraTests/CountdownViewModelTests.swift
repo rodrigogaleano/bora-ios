@@ -6,10 +6,19 @@ struct CountdownViewModelTests {
     private let route = PlannedRoute(start: RouteCoordinate(latitude: 0, longitude: 0), outboundPoints: [])
 
     private func makeViewModel(
+        cuePlayer: PreviewRunCuePlayer = PreviewRunCuePlayer(),
         onFinished: @escaping (SessionPlan, PlannedRoute) -> Void = { _, _ in },
         onCancel: @escaping () -> Void = {}
     ) -> CountdownViewModel {
-        CountdownViewModel(plan: plan, route: route, startingFrom: 3, onFinished: onFinished, onCancel: onCancel)
+        CountdownViewModel(
+            plan: plan,
+            route: route,
+            cuePlayer: cuePlayer,
+            settings: RunSettings(),
+            startingFrom: 3,
+            onFinished: onFinished,
+            onCancel: onCancel
+        )
     }
 
     @Test func tickDecrementsCount() {
@@ -36,10 +45,25 @@ struct CountdownViewModelTests {
         #expect(forwardedRoute == route)
     }
 
-    @Test func cancelInvokesOnCancel() {
+    @Test func cancelInvokesOnCancelAndReleasesAudio() {
+        let cuePlayer = PreviewRunCuePlayer()
         var wasCancelled = false
-        let viewModel = makeViewModel(onCancel: { wasCancelled = true })
+        let viewModel = makeViewModel(cuePlayer: cuePlayer, onCancel: { wasCancelled = true })
         viewModel.cancel()
         #expect(wasCancelled)
+        #expect(cuePlayer.isTornDown)
+    }
+
+    @Test func eachRemainingSecondGetsACue() {
+        let cuePlayer = PreviewRunCuePlayer()
+        let viewModel = makeViewModel(cuePlayer: cuePlayer)
+
+        viewModel.start()
+        viewModel.tick()
+        viewModel.tick()
+        // Reaching zero hands off to the run instead of ticking again.
+        viewModel.tick()
+
+        #expect(cuePlayer.playedCues == [.countdownTick(3), .countdownTick(2), .countdownTick(1)])
     }
 }
