@@ -43,6 +43,7 @@ struct RootCoordinatorView: View {
                             clock: dependencies.clock,
                             locationProvider: dependencies.locationProvider,
                             cuePlayer: dependencies.cuePlayer,
+                            runActivity: dependencies.runActivity,
                             settings: dependencies.settingsStore.load(),
                             plan: plan,
                             route: route,

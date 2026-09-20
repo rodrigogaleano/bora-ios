@@ -9,6 +9,7 @@ struct ExecutionViewModelTests {
         plan: SessionPlan,
         clock: PreviewClock = PreviewClock(),
         cuePlayer: PreviewRunCuePlayer = PreviewRunCuePlayer(),
+        runActivity: RunActivityProviding = PreviewRunActivityController(),
         settings: RunSettings = RunSettings(),
         route: PlannedRoute? = nil,
         onNext: @escaping (SessionMetrics) -> Void = { _ in }
@@ -17,6 +18,7 @@ struct ExecutionViewModelTests {
             clock: clock,
             locationProvider: PreviewLocationProvider(delay: .zero),
             cuePlayer: cuePlayer,
+            runActivity: runActivity,
             settings: settings,
             plan: plan,
             route: route ?? self.route,
@@ -30,6 +32,7 @@ struct ExecutionViewModelTests {
             clock: PreviewClock(),
             locationProvider: PreviewLocationProvider(delay: .zero),
             cuePlayer: PreviewRunCuePlayer(),
+            runActivity: PreviewRunActivityController(),
             settings: RunSettings(),
             plan: plan,
             route: nil,
