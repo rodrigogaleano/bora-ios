@@ -15,6 +15,7 @@ final class ExecutionViewModel {
     private let clock: ClockProviding
     private let locationProvider: LocationProviding
     private let cuePlayer: RunCueProviding
+    private let runActivity: RunActivityProviding
     private let settings: RunSettings
     let plan: SessionPlan
     let plannedRoute: PlannedRoute?
@@ -46,10 +47,14 @@ final class ExecutionViewModel {
     private var tickTask: Task<Void, Never>?
     private var locationTask: Task<Void, Never>?
 
+    private var lastPublishedState: RunActivityAttributes.ContentState?
+    private var lastPublishedAt: Date?
+
     init(
         clock: ClockProviding,
         locationProvider: LocationProviding,
         cuePlayer: RunCueProviding,
+        runActivity: RunActivityProviding,
         settings: RunSettings,
         plan: SessionPlan,
         route: PlannedRoute?,
@@ -58,6 +63,7 @@ final class ExecutionViewModel {
         self.clock = clock
         self.locationProvider = locationProvider
         self.cuePlayer = cuePlayer
+        self.runActivity = runActivity
         self.settings = settings
         self.plan = plan
         self.plannedRoute = route
@@ -123,6 +129,7 @@ final class ExecutionViewModel {
 
         cuePlayer.prepare(settings: settings)
         announceCurrentPhase()
+        startActivity()
     }
 
     func tick() {
@@ -137,6 +144,8 @@ final class ExecutionViewModel {
             sessionDistanceMeters: totalDistanceMeters
         ) {
             advanceToNextPhase()
+        } else {
+            publishActivity(force: false)
         }
     }
 
@@ -145,6 +154,7 @@ final class ExecutionViewModel {
         runState = .paused
         pauseStartedAt = clock.now
         cuePlayer.stopMetronome()
+        publishActivity(force: true)
     }
 
     func resume() {
@@ -155,6 +165,7 @@ final class ExecutionViewModel {
         self.pauseStartedAt = nil
         runState = .running
         startMetronomeIfNeeded()
+        publishActivity(force: true)
     }
 
     func finish() {
@@ -192,6 +203,7 @@ final class ExecutionViewModel {
         phasePausedAccumulatedSeconds = 0
         hasWarnedCurrentPhase = false
         announceCurrentPhase()
+        publishActivity(force: true)
     }
 
     private func announceCurrentPhase() {
@@ -261,6 +273,71 @@ final class ExecutionViewModel {
             maxSpeedMetersPerSecond: maxSpeedMetersPerSecond,
             splits: splits
         )
+        endActivity(metrics: metrics)
         onNext(metrics)
+    }
+}
+
+// MARK: - Live Activity
+
+private extension ExecutionViewModel {
+    func startActivity() {
+        let state = activityState()
+        runActivity.start(planTitle: SessionPlanFormatting.title(for: plan), state: state)
+        markPublished(state)
+    }
+
+    /// `force` is for the moments the lock screen must be right at once — a phase change,
+    /// a pause, a resume. Everything else goes through the throttle.
+    func publishActivity(force: Bool) {
+        let state = activityState()
+        let secondsSinceLastPublish = lastPublishedAt.map { clock.now.timeIntervalSince($0) } ?? .infinity
+        guard force || RunActivityStateBuilder.shouldPublish(
+            previous: lastPublishedState,
+            next: state,
+            secondsSinceLastPublish: secondsSinceLastPublish
+        ) else {
+            return
+        }
+        runActivity.update(state)
+        markPublished(state)
+    }
+
+    /// The finished run freezes on the lock screen with the session totals, not the last
+    /// block's — that is what the runner wants to read when they stop.
+    func endActivity(metrics: SessionMetrics) {
+        let averageSpeed = metrics.totalDuration > 0 ? metrics.totalDistanceMeters / metrics.totalDuration : 0
+        let progress = RunActivityProgress(
+            phaseTitle: String(localized: "Run finished"),
+            phaseNumber: phases.count,
+            phaseCount: phases.count,
+            elapsedInPhase: metrics.totalDuration,
+            remainingInPhase: nil,
+            pausedAt: clock.now,
+            distanceMeters: metrics.totalDistanceMeters,
+            speedMetersPerSecond: averageSpeed,
+            upcomingPhaseTitle: nil
+        )
+        runActivity.end(RunActivityStateBuilder.state(from: progress, now: clock.now))
+    }
+
+    func activityState() -> RunActivityAttributes.ContentState {
+        let progress = RunActivityProgress(
+            phaseTitle: currentPhase?.kind.displayName ?? "",
+            phaseNumber: currentPhaseIndex + 1,
+            phaseCount: phases.count,
+            elapsedInPhase: elapsedInPhase,
+            remainingInPhase: remainingInPhase,
+            pausedAt: runState == .paused ? pauseStartedAt : nil,
+            distanceMeters: totalDistanceMeters,
+            speedMetersPerSecond: currentSpeedMetersPerSecond,
+            upcomingPhaseTitle: nextPhase?.kind.displayName
+        )
+        return RunActivityStateBuilder.state(from: progress, now: clock.now)
+    }
+
+    func markPublished(_ state: RunActivityAttributes.ContentState) {
+        lastPublishedState = state
+        lastPublishedAt = clock.now
     }
 }

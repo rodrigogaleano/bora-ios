@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D6128A45306083D000D51D37 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6128A44306083D000D51D37 /* WidgetKit.framework */; };
+		D6128A47306083D000D51D37 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6128A46306083D000D51D37 /* SwiftUI.framework */; };
+		D6128A54306083D100D51D37 /* BoraLiveActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D6128A42306083D000D51D37 /* BoraLiveActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		D6128A52306083D100D51D37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D65C8CAE30561209003989C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D6128A41306083D000D51D37;
+			remoteInfo = BoraLiveActivityExtension;
+		};
 		D65C8CC43056120B003989C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D65C8CAE30561209003989C7 /* Project object */;
@@ -23,15 +36,61 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D6128A55306083D100D51D37 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D6128A54306083D100D51D37 /* BoraLiveActivityExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D6128A42306083D000D51D37 /* BoraLiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BoraLiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6128A44306083D000D51D37 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		D6128A46306083D000D51D37 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		D65C8CB630561209003989C7 /* Bora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bora.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65C8CC33056120B003989C7 /* BoraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65C8CCD3056120B003989C7 /* BoraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D6128A58306083D100D51D37 /* Exceptions for "BoraLiveActivity" folder in "BoraLiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D6128A41306083D000D51D37 /* BoraLiveActivityExtension */;
+		};
+		D6128A70306083D100D51D37 /* Exceptions for "Bora" folder in "BoraLiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Core/Formatting/RunFormatting.swift,
+				Core/LiveActivity/RunActivityAttributes.swift,
+			);
+			target = D6128A41306083D000D51D37 /* BoraLiveActivityExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		D6128A48306083D000D51D37 /* BoraLiveActivity */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D6128A58306083D100D51D37 /* Exceptions for "BoraLiveActivity" folder in "BoraLiveActivityExtension" target */,
+			);
+			path = BoraLiveActivity;
+			sourceTree = "<group>";
+		};
 		D65C8CB830561209003989C7 /* Bora */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D6128A70306083D100D51D37 /* Exceptions for "Bora" folder in "BoraLiveActivityExtension" target */,
+			);
 			path = Bora;
 			sourceTree = "<group>";
 		};
@@ -48,6 +107,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D6128A3F306083D000D51D37 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6128A47306083D000D51D37 /* SwiftUI.framework in Frameworks */,
+				D6128A45306083D000D51D37 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D65C8CB330561209003989C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,12 +140,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D6128A43306083D000D51D37 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D6128A44306083D000D51D37 /* WidgetKit.framework */,
+				D6128A46306083D000D51D37 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D65C8CAD30561209003989C7 = {
 			isa = PBXGroup;
 			children = (
 				D65C8CB830561209003989C7 /* Bora */,
 				D65C8CC63056120B003989C7 /* BoraTests */,
 				D65C8CD03056120B003989C7 /* BoraUITests */,
+				D6128A48306083D000D51D37 /* BoraLiveActivity */,
+				D6128A43306083D000D51D37 /* Frameworks */,
 				D65C8CB730561209003989C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +167,7 @@
 				D65C8CB630561209003989C7 /* Bora.app */,
 				D65C8CC33056120B003989C7 /* BoraTests.xctest */,
 				D65C8CCD3056120B003989C7 /* BoraUITests.xctest */,
+				D6128A42306083D000D51D37 /* BoraLiveActivityExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +175,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D6128A41306083D000D51D37 /* BoraLiveActivityExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6128A59306083D100D51D37 /* Build configuration list for PBXNativeTarget "BoraLiveActivityExtension" */;
+			buildPhases = (
+				D6128A3E306083D000D51D37 /* Sources */,
+				D6128A3F306083D000D51D37 /* Frameworks */,
+				D6128A40306083D000D51D37 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D6128A48306083D000D51D37 /* BoraLiveActivity */,
+			);
+			name = BoraLiveActivityExtension;
+			packageProductDependencies = (
+			);
+			productName = BoraLiveActivityExtension;
+			productReference = D6128A42306083D000D51D37 /* BoraLiveActivityExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D65C8CB530561209003989C7 /* Bora */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D65C8CD73056120B003989C7 /* Build configuration list for PBXNativeTarget "Bora" */;
@@ -102,10 +204,12 @@
 				D65C8CB230561209003989C7 /* Sources */,
 				D65C8CB330561209003989C7 /* Frameworks */,
 				D65C8CB430561209003989C7 /* Resources */,
+				D6128A55306083D100D51D37 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D6128A53306083D100D51D37 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				D65C8CB830561209003989C7 /* Bora */,
@@ -170,9 +274,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2660;
+				LastSwiftUpdateCheck = 2700;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
+					D6128A41306083D000D51D37 = {
+						CreatedOnToolsVersion = 27.0;
+					};
 					D65C8CB530561209003989C7 = {
 						CreatedOnToolsVersion = 26.6;
 					};
@@ -205,11 +312,19 @@
 				D65C8CB530561209003989C7 /* Bora */,
 				D65C8CC23056120B003989C7 /* BoraTests */,
 				D65C8CCC3056120B003989C7 /* BoraUITests */,
+				D6128A41306083D000D51D37 /* BoraLiveActivityExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D6128A40306083D000D51D37 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D65C8CB430561209003989C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,6 +349,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D6128A3E306083D000D51D37 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D65C8CB230561209003989C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -258,6 +380,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D6128A53306083D100D51D37 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D6128A41306083D000D51D37 /* BoraLiveActivityExtension */;
+			targetProxy = D6128A52306083D100D51D37 /* PBXContainerItemProxy */;
+		};
 		D65C8CC53056120B003989C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D65C8CB530561209003989C7 /* Bora */;
@@ -271,6 +398,73 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		D6128A56306083D100D51D37 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 43P6VKWW6L;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BoraLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BoraLiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rodrigogaleano.Bora.BoraLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D6128A57306083D100D51D37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 43P6VKWW6L;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BoraLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BoraLiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rodrigogaleano.Bora.BoraLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		D65C8CD53056120B003989C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -403,12 +597,16 @@
 				INFOPLIST_FILE = Support/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Usamos sua localização em segundo plano para continuar registrando sua corrida mesmo com a tela bloqueada ou o app minimizado.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos sua localização para centralizar o mapa e sugerir o ponto de partida da sua rota.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -446,12 +644,16 @@
 				INFOPLIST_FILE = Support/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Usamos sua localização em segundo plano para continuar registrando sua corrida mesmo com a tela bloqueada ou o app minimizado.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos sua localização para centralizar o mapa e sugerir o ponto de partida da sua rota.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -570,6 +772,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D6128A59306083D100D51D37 /* Build configuration list for PBXNativeTarget "BoraLiveActivityExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6128A56306083D100D51D37 /* Debug */,
+				D6128A57306083D100D51D37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D65C8CB130561209003989C7 /* Build configuration list for PBXProject "Bora" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

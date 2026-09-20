@@ -1189,6 +1189,28 @@
         }
       }
     },
+    "Run finished" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run finished"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carrera terminada"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrida finalizada"
+          }
+        }
+      }
+    },
     "Run only" : {
       "localizations" : {
         "en" : {
