@@ -903,6 +903,28 @@
         }
       }
     },
+    "Audio unavailable. Cues and metronome are muted." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio unavailable. Cues and metronome are muted."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Audio no disponible. Los avisos y el metrónomo están en silencio."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Áudio indisponível. Avisos e metrônomo estão mudos."
+          }
+        }
+      }
+    },
     "High" : {
       "localizations" : {
         "en" : {
@@ -1031,6 +1053,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Metrônomo"
+          }
+        }
+      }
+    },
+    "Metronome volume" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metronome volume"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen del metrónomo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume do metrônomo"
           }
         }
       }

@@ -10,24 +10,46 @@ final class SystemRunCuePlayer: RunCueProviding {
     private static let teardownPollInterval: Duration = .milliseconds(250)
     private static let teardownPollLimit = 24
 
-    private let engine = AVAudioEngine()
-    private let beepNode = AVAudioPlayerNode()
-    private let metronomeNode = AVAudioPlayerNode()
+    private static let recoveryRetryInterval: Duration = .seconds(2)
+    private static let recoveryRetryLimit = 15
+
+    private var engine = AVAudioEngine()
+    private var beepNode = AVAudioPlayerNode()
+    private var metronomeNode = AVAudioPlayerNode()
     private let synthesizer = AVSpeechSynthesizer()
     private let format = AudioToneFactory.makeFormat()
 
     private var settings = RunSettings()
     private var isConfigured = false
+    private var isPrepared = false
+    private var monitor = AudioSessionMonitor()
+    private var recoveryTask: Task<Void, Never>?
+    private var metronomeVolume = RunSettings().metronomeVolume
+    /// What the metronome should be doing, so it can be brought back after the system
+    /// stops the engine. Nil while it's off, paused or the run is over.
+    private var desiredMetronomeBPM: Int?
+
+    private(set) var isAudioAvailable = true
+
+    /// The player lives as long as the app, so these observers are never removed.
+    init() {
+        observeAudioSession()
+    }
 
     func prepare(settings: RunSettings) {
         self.settings = settings
-        activateSession()
-        startEngine()
+        metronomeVolume = settings.metronomeVolume
+        monitor = AudioSessionMonitor()
+        isPrepared = true
+        recover()
     }
 
     func play(_ cue: RunCue) {
         let output = RunCueResolver.output(for: cue, settings: settings)
         guard !output.isSilent else { return }
+        if !isAudioAvailable, !monitor.isInterrupted {
+            recover()
+        }
         if output.beeps > 0 {
             playBeeps(output.beeps)
         }
@@ -40,30 +62,29 @@ final class SystemRunCuePlayer: RunCueProviding {
     }
 
     func startMetronome(bpm: Int) {
-        guard settings.isMetronomeEnabled, bpm > 0, let format, isConfigured else { return }
-        let beat = 60 / Double(bpm)
-        guard let buffer = AudioToneFactory.makeTone(
-            format: format,
-            frequency: Self.clickFrequency,
-            duration: Self.clickDuration,
-            totalDuration: beat,
-            amplitude: 0.4
-        ) else {
-            return
-        }
-        metronomeNode.stop()
-        metronomeNode.scheduleBuffer(buffer, at: nil, options: .loops)
-        metronomeNode.play()
+        guard settings.isMetronomeEnabled, bpm > 0 else { return }
+        desiredMetronomeBPM = bpm
+        playMetronome(bpm: bpm)
     }
 
     func stopMetronome() {
+        desiredMetronomeBPM = nil
         metronomeNode.stop()
+    }
+
+    func setMetronomeVolume(_ volume: Double) {
+        metronomeVolume = volume
+        metronomeNode.volume = Float(volume)
     }
 
     /// Lets whatever is already playing finish before releasing the session — callers tear
     /// down right after the final cue, and cutting the session would swallow it. Bounded so
     /// a stuck utterance can't hold the session (and the user's ducked music) forever.
     func teardown() {
+        desiredMetronomeBPM = nil
+        isPrepared = false
+        recoveryTask?.cancel()
+        recoveryTask = nil
         metronomeNode.stop()
         Task { [weak self] in
             for _ in 0..<Self.teardownPollLimit {
@@ -86,33 +107,60 @@ final class SystemRunCuePlayer: RunCueProviding {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
-    /// `.playback` (not `.ambient`) is what keeps cues audible with the screen locked —
-    /// the whole point of the feature. Ducking lets the user keep their own music on.
-    private func activateSession() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playback, mode: .spokenAudio, options: [.mixWithOthers, .duckOthers])
-        try? session.setActive(true)
+    /// `AVAudioPlayerNode.play()` raises when the engine isn't running, and the system stops
+    /// the engine on interruptions — so every playback path checks first.
+    private func playMetronome(bpm: Int) {
+        guard let format, isConfigured, engine.isRunning else { return }
+        let beat = 60 / Double(bpm)
+        guard let buffer = AudioToneFactory.makeTone(
+            format: format,
+            frequency: Self.clickFrequency,
+            duration: Self.clickDuration,
+            totalDuration: beat,
+            amplitude: 0.4
+        ) else {
+            return
+        }
+        metronomeNode.stop()
+        metronomeNode.scheduleBuffer(buffer, at: nil, options: .loops)
+        metronomeNode.play()
     }
 
-    private func startEngine() {
-        guard let format else { return }
+    /// `.playback` (not `.ambient`) is what keeps cues audible with the screen locked —
+    /// the whole point of the feature. Ducking lets the user keep their own music on.
+    private func activateSession() -> Bool {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .spokenAudio, options: [.mixWithOthers, .duckOthers])
+            try session.setActive(true)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    private func startEngine() -> Bool {
+        guard let format else { return false }
         if !isConfigured {
             engine.attach(beepNode)
             engine.attach(metronomeNode)
             engine.connect(beepNode, to: engine.mainMixerNode, format: format)
             engine.connect(metronomeNode, to: engine.mainMixerNode, format: format)
+            metronomeNode.volume = Float(metronomeVolume)
             isConfigured = true
         }
-        guard !engine.isRunning else { return }
+        guard !engine.isRunning else { return true }
         do {
             try engine.start()
+            return true
         } catch {
             isConfigured = false
+            return false
         }
     }
 
     private func playBeeps(_ count: Int) {
-        guard let format, isConfigured else { return }
+        guard let format, isConfigured, engine.isRunning else { return }
         guard let buffer = AudioToneFactory.makeSequence(
             format: format,
             frequency: Self.beepFrequency,
@@ -145,6 +193,92 @@ final class SystemRunCuePlayer: RunCueProviding {
             case .success:
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
             }
+        }
+    }
+}
+
+// MARK: - Recovery
+
+extension SystemRunCuePlayer {
+    private func handle(_ event: AudioSessionMonitor.Event) {
+        guard isPrepared else { return }
+        switch monitor.handle(event) {
+        case .none:
+            break
+        case .recover:
+            recover()
+        case .rebuild:
+            rebuild()
+        }
+    }
+
+    /// Brings the session, engine and metronome back. On failure the runner is told through
+    /// `isAudioAvailable`, and it retries on its own — right after a call ends the system
+    /// often still refuses to hand the session back.
+    private func recover() {
+        if attemptRecovery() {
+            recoveryTask?.cancel()
+            recoveryTask = nil
+        } else {
+            scheduleRecoveryRetry()
+        }
+    }
+
+    private func attemptRecovery() -> Bool {
+        isAudioAvailable = activateSession() && startEngine()
+        if isAudioAvailable, let bpm = desiredMetronomeBPM {
+            playMetronome(bpm: bpm)
+        }
+        return isAudioAvailable
+    }
+
+    /// A media services reset invalidates the engine and every node attached to it.
+    private func rebuild() {
+        engine.stop()
+        engine = AVAudioEngine()
+        beepNode = AVAudioPlayerNode()
+        metronomeNode = AVAudioPlayerNode()
+        isConfigured = false
+        recover()
+    }
+
+    private func scheduleRecoveryRetry() {
+        guard recoveryTask == nil else { return }
+        recoveryTask = Task { [weak self] in
+            for _ in 0..<Self.recoveryRetryLimit {
+                try? await Task.sleep(for: Self.recoveryRetryInterval)
+                guard let self, !Task.isCancelled, isPrepared else { return }
+                // A new interruption is in progress: its end triggers the recovery instead.
+                if !monitor.isInterrupted, attemptRecovery() { break }
+            }
+            self?.recoveryTask = nil
+        }
+    }
+
+    private func observeAudioSession() {
+        observe(AVAudioSession.interruptionNotification) { note in
+            let raw = note.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt
+            switch raw.flatMap(AVAudioSession.InterruptionType.init(rawValue:)) {
+            case .began: return .interruptionBegan
+            case .ended: return .interruptionEnded
+            default: return nil
+            }
+        }
+        observe(AVAudioSession.routeChangeNotification) { note in
+            let raw = note.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt
+            return raw.flatMap(AVAudioSession.RouteChangeReason.init(rawValue:)).map { .routeChanged($0) }
+        }
+        observe(.AVAudioEngineConfigurationChange) { _ in .engineConfigurationChanged }
+        observe(AVAudioSession.mediaServicesWereResetNotification) { _ in .mediaServicesReset }
+    }
+
+    private func observe(
+        _ name: Notification.Name,
+        event: @escaping @Sendable (Notification) -> AudioSessionMonitor.Event?
+    ) {
+        NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] note in
+            guard let event = event(note) else { return }
+            MainActor.assumeIsolated { self?.handle(event) }
         }
     }
 }

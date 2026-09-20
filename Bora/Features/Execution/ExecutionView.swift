@@ -9,6 +9,14 @@ struct ExecutionView: View {
 
     var body: some View {
         VStack(spacing: 20) {
+            if viewModel.isAudioUnavailable {
+                Label("Audio unavailable. Cues and metronome are muted.", systemImage: "speaker.slash")
+                    .font(.subheadline)
+                    .padding(10)
+                    .frame(maxWidth: .infinity)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
+            }
+
             if viewModel.isGPSSignalLost {
                 Label("GPS signal lost. Check that Location access is on.", systemImage: "location.slash")
                     .font(.subheadline)

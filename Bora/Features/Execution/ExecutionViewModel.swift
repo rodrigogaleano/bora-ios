@@ -42,6 +42,7 @@ final class ExecutionViewModel {
     private(set) var maxSpeedMetersPerSecond: Double = 0
     private var lastLocationTimestamp: Date?
     private var gpsSignal: GPSSignalMonitor?
+    private(set) var isAudioUnavailable = false
 
     private(set) var splits: [SessionMetrics.BlockSplit] = []
 
@@ -146,6 +147,7 @@ final class ExecutionViewModel {
         if gpsSignal?.checkTimeout(now: now) == true {
             cuePlayer.play(.gpsLost)
         }
+        isAudioUnavailable = !cuePlayer.isAudioAvailable
         warnAboutUpcomingTransitionIfNeeded()
         if currentPhase.isComplete(
             elapsed: elapsedInPhase,
@@ -224,29 +226,6 @@ final class ExecutionViewModel {
         publishActivity(force: true)
     }
 
-    private func announceCurrentPhase() {
-        guard let currentPhase else { return }
-        cuePlayer.play(.phaseStarted(currentPhase.kind.displayName))
-        startMetronomeIfNeeded()
-    }
-
-    /// The metronome is a cadence guide, so it stays quiet while the runner is resting.
-    private func startMetronomeIfNeeded() {
-        guard settings.isMetronomeEnabled, runState == .running, let currentPhase else { return }
-        if case .rest = currentPhase.kind {
-            cuePlayer.stopMetronome()
-            return
-        }
-        cuePlayer.startMetronome(bpm: settings.metronomeBPM)
-    }
-
-    /// Fires once per phase: `tick()` runs every 500 ms, and the warning window is 10 s wide.
-    private func warnAboutUpcomingTransitionIfNeeded() {
-        guard !hasWarnedCurrentPhase, isShowingUpcomingTransitionBanner, let nextPhase else { return }
-        hasWarnedCurrentPhase = true
-        cuePlayer.play(.upcomingTransition(nextPhase.kind.displayName))
-    }
-
     private func recordSplit() {
         guard let currentPhase, let phaseStartedAt else { return }
         let pace = phaseDistanceMeters > 0
@@ -293,6 +272,33 @@ final class ExecutionViewModel {
         )
         endActivity(metrics: metrics)
         onNext(metrics)
+    }
+}
+
+// MARK: - Cues
+
+private extension ExecutionViewModel {
+    func announceCurrentPhase() {
+        guard let currentPhase else { return }
+        cuePlayer.play(.phaseStarted(currentPhase.kind.displayName))
+        startMetronomeIfNeeded()
+    }
+
+    /// The metronome is a cadence guide, so it stays quiet while the runner is resting.
+    func startMetronomeIfNeeded() {
+        guard settings.isMetronomeEnabled, runState == .running, let currentPhase else { return }
+        if case .rest = currentPhase.kind {
+            cuePlayer.stopMetronome()
+            return
+        }
+        cuePlayer.startMetronome(bpm: settings.metronomeBPM)
+    }
+
+    /// Fires once per phase: `tick()` runs every 500 ms, and the warning window is 10 s wide.
+    func warnAboutUpcomingTransitionIfNeeded() {
+        guard !hasWarnedCurrentPhase, isShowingUpcomingTransitionBanner, let nextPhase else { return }
+        hasWarnedCurrentPhase = true
+        cuePlayer.play(.upcomingTransition(nextPhase.kind.displayName))
     }
 }
 
