@@ -10,6 +10,7 @@ final class SettingsViewModel {
     var isBeepEnabled: Bool { didSet { persist() } }
     var isHapticsEnabled: Bool { didSet { persist() } }
     var isMetronomeEnabled: Bool { didSet { persist() } }
+    var gpsAccuracy: GPSAccuracy { didSet { persist() } }
     var metronomeBPM: Int {
         didSet {
             let clamped = min(max(metronomeBPM, RunSettings.bpmRange.lowerBound), RunSettings.bpmRange.upperBound)
@@ -31,6 +32,7 @@ final class SettingsViewModel {
         isBeepEnabled = settings.isBeepEnabled
         isHapticsEnabled = settings.isHapticsEnabled
         isMetronomeEnabled = settings.isMetronomeEnabled
+        gpsAccuracy = settings.gpsAccuracy
         metronomeBPM = settings.metronomeBPM
     }
 
@@ -40,7 +42,8 @@ final class SettingsViewModel {
             isBeepEnabled: isBeepEnabled,
             isHapticsEnabled: isHapticsEnabled,
             isMetronomeEnabled: isMetronomeEnabled,
-            metronomeBPM: metronomeBPM
+            metronomeBPM: metronomeBPM,
+            gpsAccuracy: gpsAccuracy
         )
     }
 

@@ -15,12 +15,14 @@ struct SettingsViewModelTests {
         stored.isBeepEnabled = false
         stored.isMetronomeEnabled = true
         stored.metronomeBPM = 160
+        stored.gpsAccuracy = .high
 
         let viewModel = makeViewModel(store: PreviewRunSettingsStore(settings: stored))
 
         #expect(!viewModel.isBeepEnabled)
         #expect(viewModel.isMetronomeEnabled)
         #expect(viewModel.metronomeBPM == 160)
+        #expect(viewModel.gpsAccuracy == .high)
     }
 
     @Test func togglingPersistsImmediately() {
@@ -30,6 +32,15 @@ struct SettingsViewModelTests {
         viewModel.isVoiceCueEnabled = false
 
         #expect(!store.load().isVoiceCueEnabled)
+    }
+
+    @Test func changingGpsAccuracyPersistsImmediately() {
+        let store = PreviewRunSettingsStore()
+        let viewModel = makeViewModel(store: store)
+
+        viewModel.gpsAccuracy = .economy
+
+        #expect(store.load().gpsAccuracy == .economy)
     }
 
     @Test func bpmIsClampedToSupportedRange() {

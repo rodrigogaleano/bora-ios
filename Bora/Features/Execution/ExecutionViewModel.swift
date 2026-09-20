@@ -105,8 +105,8 @@ final class ExecutionViewModel {
 
         locationTask = Task { [weak self] in
             guard let self else { return }
-            for await coordinate in locationProvider.startLocationUpdates() {
-                self.recordLocation(coordinate)
+            for await sample in locationProvider.startLocationUpdates(accuracy: settings.gpsAccuracy) {
+                self.recordLocation(sample)
             }
         }
 
@@ -172,18 +172,23 @@ final class ExecutionViewModel {
         finishRun()
     }
 
-    func recordLocation(_ coordinate: RouteCoordinate) {
+    func recordLocation(_ sample: LocationSample) {
         guard runState == .running else { return }
+        let elapsedSinceLastFix = lastLocationTimestamp.map { clock.now.timeIntervalSince($0) } ?? 0
+        guard LocationQualityFilter.accepts(
+            sample,
+            after: traveledPath.last,
+            elapsed: elapsedSinceLastFix,
+            accuracy: settings.gpsAccuracy
+        ) else { return }
+        let coordinate = sample.coordinate
         if let last = traveledPath.last {
             let delta = last.clLocation.distance(from: coordinate.clLocation)
             totalDistanceMeters += delta
             phaseDistanceMeters += delta
-            if let lastTimestamp = lastLocationTimestamp {
-                let elapsed = clock.now.timeIntervalSince(lastTimestamp)
-                if elapsed > 0 {
-                    currentSpeedMetersPerSecond = delta / elapsed
-                    maxSpeedMetersPerSecond = max(maxSpeedMetersPerSecond, currentSpeedMetersPerSecond)
-                }
+            if elapsedSinceLastFix > 0 {
+                currentSpeedMetersPerSecond = delta / elapsedSinceLastFix
+                maxSpeedMetersPerSecond = max(maxSpeedMetersPerSecond, currentSpeedMetersPerSecond)
             }
         }
         lastLocationTimestamp = clock.now
