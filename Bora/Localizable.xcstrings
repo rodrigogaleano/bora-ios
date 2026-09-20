@@ -837,6 +837,72 @@
         }
       }
     },
+    "GPS signal back" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS signal back"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Señal de GPS recuperada"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinal de GPS de volta"
+          }
+        }
+      }
+    },
+    "GPS signal lost" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS signal lost"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Señal de GPS perdida"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinal de GPS perdido"
+          }
+        }
+      }
+    },
+    "GPS signal lost. Check that Location access is on." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GPS signal lost. Check that Location access is on."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Señal de GPS perdida. Revisa que el acceso a la ubicación esté activado."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinal de GPS perdido. Confira se o acesso à localização está ativado."
+          }
+        }
+      }
+    },
     "High" : {
       "localizations" : {
         "en" : {

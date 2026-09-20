@@ -9,9 +9,29 @@ struct RunCueResolverTests {
     )
 
     @Test func everythingDisabledProducesSilentOutput() {
-        for cue in [RunCue.countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runFinished] {
+        let cues: [RunCue] = [
+            .countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runFinished,
+            .gpsLost, .gpsRecovered
+        ]
+        for cue in cues {
             #expect(RunCueResolver.output(for: cue, settings: allOff).isSilent)
         }
+    }
+
+    @Test func gpsLostIsAnUrgentCueWithSpeechBeepsAndHaptic() {
+        let output = RunCueResolver.output(for: .gpsLost, settings: RunSettings())
+
+        #expect(output.speech != nil)
+        #expect(output.beeps == 2)
+        #expect(output.haptic == .heavy)
+    }
+
+    @Test func gpsRecoveredIsAShorterCueThanGpsLost() {
+        let output = RunCueResolver.output(for: .gpsRecovered, settings: RunSettings())
+
+        #expect(output.speech != nil)
+        #expect(output.beeps == 1)
+        #expect(output.haptic == .light)
     }
 
     @Test func voiceDisabledStillBeeps() {

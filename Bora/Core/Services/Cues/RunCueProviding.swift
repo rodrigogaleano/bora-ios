@@ -5,6 +5,8 @@ enum RunCue: Hashable {
     case phaseStarted(String)
     case upcomingTransition(String)
     case runFinished
+    case gpsLost
+    case gpsRecovered
 }
 
 protocol RunCueProviding {
