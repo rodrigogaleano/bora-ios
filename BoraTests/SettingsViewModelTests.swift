@@ -16,6 +16,7 @@ struct SettingsViewModelTests {
         stored.isMetronomeEnabled = true
         stored.metronomeBPM = 160
         stored.gpsAccuracy = .high
+        stored.metronomeVolume = 0.2
 
         let viewModel = makeViewModel(store: PreviewRunSettingsStore(settings: stored))
 
@@ -23,6 +24,7 @@ struct SettingsViewModelTests {
         #expect(viewModel.isMetronomeEnabled)
         #expect(viewModel.metronomeBPM == 160)
         #expect(viewModel.gpsAccuracy == .high)
+        #expect(viewModel.metronomeVolume == 0.2)
     }
 
     @Test func togglingPersistsImmediately() {
@@ -53,6 +55,29 @@ struct SettingsViewModelTests {
         viewModel.metronomeBPM = 10
         #expect(viewModel.metronomeBPM == RunSettings.bpmRange.lowerBound)
         #expect(store.load().metronomeBPM == RunSettings.bpmRange.lowerBound)
+    }
+
+    @Test func metronomeVolumeIsClampedAndPersisted() {
+        let store = PreviewRunSettingsStore()
+        let viewModel = makeViewModel(store: store)
+
+        viewModel.metronomeVolume = 5
+        #expect(viewModel.metronomeVolume == RunSettings.metronomeVolumeRange.upperBound)
+
+        viewModel.metronomeVolume = 0
+        #expect(viewModel.metronomeVolume == RunSettings.metronomeVolumeRange.lowerBound)
+        #expect(store.load().metronomeVolume == RunSettings.metronomeVolumeRange.lowerBound)
+    }
+
+    @Test func metronomeVolumeReachesThePlayerWhileItIsPlaying() {
+        let cuePlayer = PreviewRunCuePlayer()
+        let viewModel = makeViewModel(cuePlayer: cuePlayer)
+        viewModel.isMetronomeEnabled = true
+        viewModel.testCues()
+
+        viewModel.metronomeVolume = 0.1
+
+        #expect(cuePlayer.metronomeVolume == 0.1)
     }
 
     @Test func testCuesPlaysThroughThePlayerHonoringMetronomeToggle() {

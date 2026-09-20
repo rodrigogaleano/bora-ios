@@ -55,6 +55,13 @@ private struct MetronomeSection: View {
                     Text("\(viewModel.metronomeBPM) BPM")
                         .monospacedDigit()
                 }
+                Slider(value: $viewModel.metronomeVolume, in: RunSettings.metronomeVolumeRange) {
+                    Text("Metronome volume")
+                } minimumValueLabel: {
+                    Image(systemName: "speaker.fill")
+                } maximumValueLabel: {
+                    Image(systemName: "speaker.wave.3.fill")
+                }
             }
         } footer: {
             Text("Cadence guide, in steps per minute. Pauses during rest blocks.")

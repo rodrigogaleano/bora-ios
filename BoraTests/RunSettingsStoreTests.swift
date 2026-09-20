@@ -24,6 +24,7 @@ struct RunSettingsStoreTests {
         settings.isVoiceCueEnabled = false
         settings.isMetronomeEnabled = true
         settings.metronomeBPM = 185
+        settings.metronomeVolume = 0.15
         settings.gpsAccuracy = .economy
 
         UserDefaultsRunSettingsStore(defaults: defaults).save(settings)
@@ -53,5 +54,6 @@ struct RunSettingsStoreTests {
         #expect(loaded.isMetronomeEnabled)
         #expect(loaded.metronomeBPM == 180)
         #expect(loaded.gpsAccuracy == .balanced)
+        #expect(loaded.metronomeVolume == RunSettings().metronomeVolume)
     }
 }

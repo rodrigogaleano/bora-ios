@@ -9,9 +9,14 @@ struct RunSettings: Hashable, Codable {
     var isHapticsEnabled = true
     var isMetronomeEnabled = false
     var metronomeBPM = 170
+    /// Relative to the metronome's full click level, so the slider only ever turns it down.
+    var metronomeVolume = 0.5
     var gpsAccuracy = GPSAccuracy.balanced
 
     static let bpmRange = 140...200
+    /// Floor above zero on purpose: the toggle is how you turn the metronome off, and a
+    /// silent-but-enabled metronome just looks broken.
+    static let metronomeVolumeRange = 0.05...1.0
 }
 
 extension RunSettings {
@@ -30,6 +35,8 @@ extension RunSettings {
             ?? defaults.isMetronomeEnabled
         metronomeBPM = try container.decodeIfPresent(Int.self, forKey: .metronomeBPM)
             ?? defaults.metronomeBPM
+        metronomeVolume = try container.decodeIfPresent(Double.self, forKey: .metronomeVolume)
+            ?? defaults.metronomeVolume
         gpsAccuracy = try container.decodeIfPresent(GPSAccuracy.self, forKey: .gpsAccuracy)
             ?? defaults.gpsAccuracy
     }

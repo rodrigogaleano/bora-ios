@@ -11,6 +11,18 @@ final class SettingsViewModel {
     var isHapticsEnabled: Bool { didSet { persist() } }
     var isMetronomeEnabled: Bool { didSet { persist() } }
     var gpsAccuracy: GPSAccuracy { didSet { persist() } }
+    var metronomeVolume: Double {
+        didSet {
+            let range = RunSettings.metronomeVolumeRange
+            let clamped = min(max(metronomeVolume, range.lowerBound), range.upperBound)
+            if clamped != metronomeVolume {
+                metronomeVolume = clamped
+                return
+            }
+            cuePlayer.setMetronomeVolume(metronomeVolume)
+            persist()
+        }
+    }
     var metronomeBPM: Int {
         didSet {
             let clamped = min(max(metronomeBPM, RunSettings.bpmRange.lowerBound), RunSettings.bpmRange.upperBound)
@@ -34,6 +46,7 @@ final class SettingsViewModel {
         isMetronomeEnabled = settings.isMetronomeEnabled
         gpsAccuracy = settings.gpsAccuracy
         metronomeBPM = settings.metronomeBPM
+        metronomeVolume = settings.metronomeVolume
     }
 
     var settings: RunSettings {
@@ -43,6 +56,7 @@ final class SettingsViewModel {
             isHapticsEnabled: isHapticsEnabled,
             isMetronomeEnabled: isMetronomeEnabled,
             metronomeBPM: metronomeBPM,
+            metronomeVolume: metronomeVolume,
             gpsAccuracy: gpsAccuracy
         )
     }
