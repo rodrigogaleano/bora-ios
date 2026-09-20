@@ -41,6 +41,7 @@ final class ExecutionViewModel {
     private(set) var currentSpeedMetersPerSecond: Double = 0
     private(set) var maxSpeedMetersPerSecond: Double = 0
     private var lastLocationTimestamp: Date?
+    private var gpsSignal: GPSSignalMonitor?
 
     private(set) var splits: [SessionMetrics.BlockSplit] = []
 
@@ -94,6 +95,8 @@ final class ExecutionViewModel {
         }
     }
 
+    var isGPSSignalLost: Bool { gpsSignal?.isLost ?? false }
+
     var isShowingUpcomingTransitionBanner: Bool {
         guard let remaining = remainingInPhase else { return false }
         return remaining > 0 && remaining <= Self.preTransitionWarningWindow
@@ -126,6 +129,7 @@ final class ExecutionViewModel {
         let now = clock.now
         sessionStartedAt = now
         phaseStartedAt = now
+        gpsSignal = GPSSignalMonitor(startedAt: now)
 
         cuePlayer.prepare(settings: settings)
         announceCurrentPhase()
@@ -137,6 +141,11 @@ final class ExecutionViewModel {
         let now = clock.now
         elapsedInPhase = now.timeIntervalSince(phaseStartedAt) - phasePausedAccumulatedSeconds
         elapsedTotal = now.timeIntervalSince(sessionStartedAt) - pausedAccumulatedSeconds
+        // The run keeps going (a timed workout doesn't need GPS); the runner just needs to
+        // know distance stopped counting.
+        if gpsSignal?.checkTimeout(now: now) == true {
+            cuePlayer.play(.gpsLost)
+        }
         warnAboutUpcomingTransitionIfNeeded()
         if currentPhase.isComplete(
             elapsed: elapsedInPhase,
@@ -163,6 +172,7 @@ final class ExecutionViewModel {
         pausedAccumulatedSeconds += pausedDuration
         phasePausedAccumulatedSeconds += pausedDuration
         self.pauseStartedAt = nil
+        gpsSignal?.resume(at: clock.now)
         runState = .running
         startMetronomeIfNeeded()
         publishActivity(force: true)
@@ -181,6 +191,9 @@ final class ExecutionViewModel {
             elapsed: elapsedSinceLastFix,
             accuracy: settings.gpsAccuracy
         ) else { return }
+        if gpsSignal?.recordValidFix(at: clock.now) == true {
+            cuePlayer.play(.gpsRecovered)
+        }
         let coordinate = sample.coordinate
         if let last = traveledPath.last {
             let delta = last.clLocation.distance(from: coordinate.clLocation)

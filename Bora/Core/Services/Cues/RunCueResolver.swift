@@ -44,6 +44,10 @@ enum RunCueResolver {
             return Output(speech: String(localized: "Coming up: \(name)"), beeps: 2, haptic: .light)
         case .runFinished:
             return Output(speech: String(localized: "Finished"), beeps: 3, haptic: .success)
+        case .gpsLost:
+            return Output(speech: String(localized: "GPS signal lost"), beeps: 2, haptic: .heavy)
+        case .gpsRecovered:
+            return Output(speech: String(localized: "GPS signal back"), beeps: 1, haptic: .light)
         }
     }
 }
