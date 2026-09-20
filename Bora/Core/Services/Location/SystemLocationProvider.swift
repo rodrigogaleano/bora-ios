@@ -10,7 +10,7 @@ final class SystemLocationProvider: NSObject, LocationProviding {
     private let manager = CLLocationManager()
     private var continuation: CheckedContinuation<RouteCoordinate, Error>?
     private var isAwaitingAuthorization = false
-    private var updatesContinuation: AsyncStream<RouteCoordinate>.Continuation?
+    private var updatesContinuation: AsyncStream<LocationSample>.Continuation?
 
     override init() {
         super.init()
@@ -34,7 +34,8 @@ final class SystemLocationProvider: NSObject, LocationProviding {
         }
     }
 
-    func startLocationUpdates() -> AsyncStream<RouteCoordinate> {
+    func startLocationUpdates(accuracy: GPSAccuracy) -> AsyncStream<LocationSample> {
+        manager.desiredAccuracy = accuracy.desiredAccuracy
         manager.allowsBackgroundLocationUpdates = true
         manager.pausesLocationUpdatesAutomatically = false
         manager.activityType = .fitness
@@ -89,11 +90,14 @@ extension SystemLocationProvider: CLLocationManagerDelegate {
             resume(throwing: LocationError.noLocationReturned)
             return
         }
-        let coordinate = RouteCoordinate(location.coordinate)
         if continuation != nil {
-            resume(returning: coordinate)
+            resume(returning: RouteCoordinate(location.coordinate))
         }
-        updatesContinuation?.yield(coordinate)
+        // CoreLocation batches fixes when the app was suspended; every one counts toward
+        // the run, not just the latest.
+        for fix in locations {
+            updatesContinuation?.yield(LocationSample(fix))
+        }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

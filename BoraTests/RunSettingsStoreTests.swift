@@ -24,6 +24,7 @@ struct RunSettingsStoreTests {
         settings.isVoiceCueEnabled = false
         settings.isMetronomeEnabled = true
         settings.metronomeBPM = 185
+        settings.gpsAccuracy = .economy
 
         UserDefaultsRunSettingsStore(defaults: defaults).save(settings)
 
@@ -35,5 +36,22 @@ struct RunSettingsStoreTests {
         defaults.set(Data("not json".utf8), forKey: Self.key)
 
         #expect(UserDefaultsRunSettingsStore(defaults: defaults).load() == RunSettings())
+    }
+
+    @Test func blobFromBeforeGpsAccuracyKeepsSavedChoicesAndDefaultsTheNewField() {
+        let defaults = makeDefaults()
+        let legacy = """
+        {"isVoiceCueEnabled":false,"isBeepEnabled":true,"isHapticsEnabled":false,
+        "isMetronomeEnabled":true,"metronomeBPM":180}
+        """
+        defaults.set(Data(legacy.utf8), forKey: Self.key)
+
+        let loaded = UserDefaultsRunSettingsStore(defaults: defaults).load()
+
+        #expect(!loaded.isVoiceCueEnabled)
+        #expect(!loaded.isHapticsEnabled)
+        #expect(loaded.isMetronomeEnabled)
+        #expect(loaded.metronomeBPM == 180)
+        #expect(loaded.gpsAccuracy == .balanced)
     }
 }

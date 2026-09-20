@@ -13,6 +13,7 @@ struct SettingsView: View {
                 AudioSection(viewModel: viewModel)
                 MetronomeSection(viewModel: viewModel)
                 HapticsSection(viewModel: viewModel)
+                GPSSection(viewModel: viewModel)
                 Section {
                     Button("Test cues") { viewModel.testCues() }
                     Button("Stop") { viewModel.stopTestCues() }
@@ -69,6 +70,22 @@ private struct HapticsSection: View {
             Toggle("Haptics", isOn: $viewModel.isHapticsEnabled)
         } footer: {
             Text("Vibration only reaches you while the screen is on.")
+        }
+    }
+}
+
+private struct GPSSection: View {
+    @Bindable var viewModel: SettingsViewModel
+
+    var body: some View {
+        Section {
+            Picker("GPS accuracy", selection: $viewModel.gpsAccuracy) {
+                ForEach(GPSAccuracy.allCases, id: \.self) { level in
+                    Text(level.displayName).tag(level)
+                }
+            }
+        } footer: {
+            Text("More accuracy tracks distance and pace better but uses more battery. Applies to your next run.")
         }
     }
 }

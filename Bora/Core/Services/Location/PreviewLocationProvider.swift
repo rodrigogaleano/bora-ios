@@ -4,7 +4,7 @@ struct PreviewLocationProvider: LocationProviding {
     var coordinate = RouteCoordinate(latitude: -23.5614, longitude: -46.6560)
     var delay: Duration = .milliseconds(300)
     var error: Error?
-    var updates: [RouteCoordinate] = []
+    var updates: [LocationSample] = []
     var updateInterval: Duration = .milliseconds(300)
 
     func requestCurrentLocation() async throws -> RouteCoordinate {
@@ -15,7 +15,7 @@ struct PreviewLocationProvider: LocationProviding {
         return coordinate
     }
 
-    func startLocationUpdates() -> AsyncStream<RouteCoordinate> {
+    func startLocationUpdates(accuracy: GPSAccuracy) -> AsyncStream<LocationSample> {
         AsyncStream { continuation in
             let task = Task {
                 for point in updates {

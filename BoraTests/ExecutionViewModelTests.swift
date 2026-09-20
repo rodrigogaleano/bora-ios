@@ -137,9 +137,9 @@ struct ExecutionViewModelTests {
         viewModel.beginTiming()
 
         clock.advance(by: 10)
-        viewModel.recordLocation(RouteCoordinate(latitude: 0, longitude: 0.001))
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0.001)))
         clock.advance(by: 10)
-        viewModel.recordLocation(RouteCoordinate(latitude: 0, longitude: 0.002))
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0.002)))
         viewModel.tick()
 
         viewModel.finish()
@@ -157,9 +157,9 @@ struct ExecutionViewModelTests {
         let viewModel = makeViewModel(plan: plan, clock: clock, onNext: { finishedMetrics = $0 })
         viewModel.beginTiming()
 
-        viewModel.recordLocation(RouteCoordinate(latitude: 0, longitude: 0))
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0)))
         // ~0.001 degrees longitude at the equator is roughly 111 meters.
-        viewModel.recordLocation(RouteCoordinate(latitude: 0, longitude: 0.001))
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0.001)))
         viewModel.tick()
 
         #expect(finishedMetrics != nil)
