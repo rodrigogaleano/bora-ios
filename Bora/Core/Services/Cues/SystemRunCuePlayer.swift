@@ -24,6 +24,10 @@ final class SystemRunCuePlayer: RunCueProviding {
     private var isPrepared = false
     private var monitor = AudioSessionMonitor()
     private var recoveryTask: Task<Void, Never>?
+    private var duckingGate = DuckingGate()
+    private var releaseTask: Task<Void, Never>?
+    /// The synthesizer only keeps a weak reference to its delegate.
+    private lazy var speechObserver = SpeechEndObserver { [weak self] in self?.soundFinished() }
     private var metronomeVolume = RunSettings().metronomeVolume
     /// What the metronome should be doing, so it can be brought back after the system
     /// stops the engine. Nil while it's off, paused or the run is over.
@@ -33,6 +37,7 @@ final class SystemRunCuePlayer: RunCueProviding {
 
     /// The player lives as long as the app, so these observers are never removed.
     init() {
+        synthesizer.delegate = speechObserver
         observeAudioSession()
     }
 
@@ -40,6 +45,7 @@ final class SystemRunCuePlayer: RunCueProviding {
         self.settings = settings
         metronomeVolume = settings.metronomeVolume
         monitor = AudioSessionMonitor()
+        resetDucking()
         isPrepared = true
         recover()
     }
@@ -83,6 +89,7 @@ final class SystemRunCuePlayer: RunCueProviding {
     func teardown() {
         desiredMetronomeBPM = nil
         isPrepared = false
+        resetDucking()
         recoveryTask?.cancel()
         recoveryTask = nil
         metronomeNode.stop()
@@ -127,11 +134,15 @@ final class SystemRunCuePlayer: RunCueProviding {
     }
 
     /// `.playback` (not `.ambient`) is what keeps cues audible with the screen locked —
-    /// the whole point of the feature. Ducking lets the user keep their own music on.
+    /// the whole point of the feature. Other apps are ducked only while a cue is sounding,
+    /// so the user keeps their own music at full volume the rest of the run.
     private func activateSession() -> Bool {
         let session = AVAudioSession.sharedInstance()
+        let options: AVAudioSession.CategoryOptions = duckingGate.isDucking
+            ? [.mixWithOthers, .duckOthers]
+            : [.mixWithOthers]
         do {
-            try session.setCategory(.playback, mode: .spokenAudio, options: [.mixWithOthers, .duckOthers])
+            try session.setCategory(.playback, mode: .spokenAudio, options: options)
             try session.setActive(true)
             return true
         } catch {
@@ -170,7 +181,10 @@ final class SystemRunCuePlayer: RunCueProviding {
         ) else {
             return
         }
-        beepNode.scheduleBuffer(buffer, at: nil)
+        soundStarted()
+        beepNode.scheduleBuffer(buffer, at: nil, completionCallbackType: .dataPlayedBack) { [weak self] _ in
+            Task { @MainActor in self?.soundFinished() }
+        }
         beepNode.play()
     }
 
@@ -178,6 +192,7 @@ final class SystemRunCuePlayer: RunCueProviding {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: Locale.current.identifier)
             ?? AVSpeechSynthesisVoice(language: Locale.current.language.languageCode?.identifier)
+        soundStarted()
         synthesizer.speak(utterance)
     }
 
@@ -202,6 +217,10 @@ final class SystemRunCuePlayer: RunCueProviding {
 extension SystemRunCuePlayer {
     private func handle(_ event: AudioSessionMonitor.Event) {
         guard isPrepared else { return }
+        // The engine stopped mid-sound: the completions of what was playing may never arrive.
+        if event == .interruptionBegan || event == .mediaServicesReset {
+            resetDucking()
+        }
         switch monitor.handle(event) {
         case .none:
             break
@@ -280,5 +299,58 @@ extension SystemRunCuePlayer {
             guard let event = event(note) else { return }
             MainActor.assumeIsolated { self?.handle(event) }
         }
+    }
+}
+
+// MARK: - Ducking
+
+extension SystemRunCuePlayer {
+    /// Every beep sequence and utterance brackets itself with these two calls.
+    private func soundStarted() {
+        releaseTask?.cancel()
+        releaseTask = nil
+        if duckingGate.soundStarted() == .duck {
+            _ = activateSession()
+        }
+    }
+
+    private func soundFinished() {
+        guard let deadline = duckingGate.soundFinished(at: .now) else { return }
+        releaseTask?.cancel()
+        releaseTask = Task { [weak self] in
+            try? await Task.sleep(until: deadline, clock: .continuous)
+            guard let self, !Task.isCancelled else { return }
+            releaseTask = nil
+            if duckingGate.releaseIfDue(at: .now) == .release {
+                _ = activateSession()
+            }
+        }
+    }
+
+    private func resetDucking() {
+        releaseTask?.cancel()
+        releaseTask = nil
+        duckingGate.reset()
+    }
+}
+
+/// `AVSpeechSynthesizer` reports through an `NSObject` delegate, which the player isn't.
+private final class SpeechEndObserver: NSObject, AVSpeechSynthesizerDelegate {
+    private let onEnd: @MainActor () -> Void
+
+    init(onEnd: @escaping @MainActor () -> Void) {
+        self.onEnd = onEnd
+    }
+
+    nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        notifyEnd()
+    }
+
+    nonisolated func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        notifyEnd()
+    }
+
+    private nonisolated func notifyEnd() {
+        Task { @MainActor [onEnd] in onEnd() }
     }
 }
