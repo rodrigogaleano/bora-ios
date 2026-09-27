@@ -89,6 +89,50 @@
         }
       }
     },
+    "Almost done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almost done"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casi terminas"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quase lá"
+          }
+        }
+      }
+    },
+    "Announces what comes next shortly before each block ends: 10 seconds or 50 meters before." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Announces what comes next shortly before each block ends: 10 seconds or 50 meters before."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuncia lo que viene poco antes de que termine cada bloque: 10 segundos o 50 metros antes."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuncia o que vem a seguir pouco antes de cada bloco terminar: 10 segundos ou 50 metros antes."
+          }
+        }
+      }
+    },
     "Audio" : {
       "localizations" : {
         "en" : {
@@ -305,6 +349,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verifique a permissão de localização e tente novamente."
+          }
+        }
+      }
+    },
+    "Checkpoints" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checkpoints"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puntos de control"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checkpoints"
           }
         }
       }
@@ -1691,6 +1757,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sessão total"
+          }
+        }
+      }
+    },
+    "Transition warning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transition warning"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aviso de transición"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aviso de transição"
           }
         }
       }

@@ -45,6 +45,15 @@ struct SettingsViewModelTests {
         #expect(store.load().gpsAccuracy == .economy)
     }
 
+    @Test func turningOffTransitionWarningPersistsImmediately() {
+        let store = PreviewRunSettingsStore()
+        let viewModel = makeViewModel(store: store)
+
+        viewModel.isTransitionWarningEnabled = false
+
+        #expect(!store.load().isTransitionWarningEnabled)
+    }
+
     @Test func bpmIsClampedToSupportedRange() {
         let store = PreviewRunSettingsStore()
         let viewModel = makeViewModel(store: store)

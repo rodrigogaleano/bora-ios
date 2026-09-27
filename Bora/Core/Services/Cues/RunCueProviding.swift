@@ -4,6 +4,7 @@ enum RunCue: Hashable {
     case countdownTick(Int)
     case phaseStarted(String)
     case upcomingTransition(String)
+    case runEnding
     case runFinished
     case gpsLost
     case gpsRecovered

@@ -11,6 +11,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 AudioSection(viewModel: viewModel)
+                CheckpointsSection(viewModel: viewModel)
                 MetronomeSection(viewModel: viewModel)
                 HapticsSection(viewModel: viewModel)
                 GPSSection(viewModel: viewModel)
@@ -36,6 +37,20 @@ private struct AudioSection: View {
         Section("Audio") {
             Toggle("Voice cues", isOn: $viewModel.isVoiceCueEnabled)
             Toggle("Beeps", isOn: $viewModel.isBeepEnabled)
+        }
+    }
+}
+
+private struct CheckpointsSection: View {
+    @Bindable var viewModel: SettingsViewModel
+
+    var body: some View {
+        Section {
+            Toggle("Transition warning", isOn: $viewModel.isTransitionWarningEnabled)
+        } header: {
+            Text("Checkpoints")
+        } footer: {
+            Text("Announces what comes next shortly before each block ends: 10 seconds or 50 meters before.")
         }
     }
 }

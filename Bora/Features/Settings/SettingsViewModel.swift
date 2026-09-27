@@ -11,6 +11,7 @@ final class SettingsViewModel {
     var isHapticsEnabled: Bool { didSet { persist() } }
     var isMetronomeEnabled: Bool { didSet { persist() } }
     var gpsAccuracy: GPSAccuracy { didSet { persist() } }
+    var isTransitionWarningEnabled: Bool { didSet { persist() } }
     var metronomeVolume: Double {
         didSet {
             let range = RunSettings.metronomeVolumeRange
@@ -45,6 +46,7 @@ final class SettingsViewModel {
         isHapticsEnabled = settings.isHapticsEnabled
         isMetronomeEnabled = settings.isMetronomeEnabled
         gpsAccuracy = settings.gpsAccuracy
+        isTransitionWarningEnabled = settings.isTransitionWarningEnabled
         metronomeBPM = settings.metronomeBPM
         metronomeVolume = settings.metronomeVolume
     }
@@ -57,7 +59,8 @@ final class SettingsViewModel {
             isMetronomeEnabled: isMetronomeEnabled,
             metronomeBPM: metronomeBPM,
             metronomeVolume: metronomeVolume,
-            gpsAccuracy: gpsAccuracy
+            gpsAccuracy: gpsAccuracy,
+            isTransitionWarningEnabled: isTransitionWarningEnabled
         )
     }
 

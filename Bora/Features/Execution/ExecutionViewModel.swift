@@ -9,7 +9,6 @@ final class ExecutionViewModel {
         case finished
     }
 
-    private static let preTransitionWarningWindow: TimeInterval = 10
     private static let tickInterval: Duration = .milliseconds(500)
 
     private let clock: ClockProviding
@@ -24,7 +23,7 @@ final class ExecutionViewModel {
     private let phases: [RunPhase]
     private(set) var currentPhaseIndex = 0
     private(set) var runState: RunState = .running
-    private var hasWarnedCurrentPhase = false
+    private var checkpoints: PhaseCheckpoints?
 
     private var sessionStartedAt: Date?
     private var phaseStartedAt: Date?
@@ -100,7 +99,7 @@ final class ExecutionViewModel {
 
     var isShowingUpcomingTransitionBanner: Bool {
         guard let remaining = remainingInPhase else { return false }
-        return remaining > 0 && remaining <= Self.preTransitionWarningWindow
+        return remaining > 0 && remaining <= PhaseCheckpoints.transitionWarningSeconds
     }
 
     func start() {
@@ -148,7 +147,6 @@ final class ExecutionViewModel {
             cuePlayer.play(.gpsLost)
         }
         isAudioUnavailable = !cuePlayer.isAudioAvailable
-        warnAboutUpcomingTransitionIfNeeded()
         if currentPhase.isComplete(
             elapsed: elapsedInPhase,
             phaseDistanceMeters: phaseDistanceMeters,
@@ -156,6 +154,7 @@ final class ExecutionViewModel {
         ) {
             advanceToNextPhase()
         } else {
+            playCheckpointIfReached()
             publishActivity(force: false)
         }
     }
@@ -221,7 +220,6 @@ final class ExecutionViewModel {
         elapsedInPhase = 0
         phaseDistanceMeters = 0
         phasePausedAccumulatedSeconds = 0
-        hasWarnedCurrentPhase = false
         announceCurrentPhase()
         publishActivity(force: true)
     }
@@ -280,6 +278,7 @@ final class ExecutionViewModel {
 private extension ExecutionViewModel {
     func announceCurrentPhase() {
         guard let currentPhase else { return }
+        checkpoints = PhaseCheckpoints(phase: currentPhase, nextPhase: nextPhase, config: settings.checkpointConfig)
         cuePlayer.play(.phaseStarted(currentPhase.kind.displayName))
         startMetronomeIfNeeded()
     }
@@ -294,11 +293,15 @@ private extension ExecutionViewModel {
         cuePlayer.startMetronome(bpm: settings.metronomeBPM)
     }
 
-    /// Fires once per phase: `tick()` runs every 500 ms, and the warning window is 10 s wide.
-    func warnAboutUpcomingTransitionIfNeeded() {
-        guard !hasWarnedCurrentPhase, isShowingUpcomingTransitionBanner, let nextPhase else { return }
-        hasWarnedCurrentPhase = true
-        cuePlayer.play(.upcomingTransition(nextPhase.kind.displayName))
+    func playCheckpointIfReached() {
+        let progress = PhaseCheckpoints.Progress(
+            elapsed: elapsedInPhase,
+            phaseDistanceMeters: phaseDistanceMeters,
+            sessionDistanceMeters: totalDistanceMeters
+        )
+        if let cue = checkpoints?.cue(for: progress) {
+            cuePlayer.play(cue)
+        }
     }
 }
 
