@@ -23,4 +23,24 @@ struct PlanningViewModelTests {
         viewModel.next()
         #expect(!wasCalled)
     }
+
+    @Test func timeGoalIsBuiltInSeconds() {
+        let viewModel = PlanningViewModel(clock: SystemClock()) { _ in }
+        viewModel.goalKind = .time
+        #expect(viewModel.sessionPlan.goal == .time(1_800))
+    }
+
+    @Test func timedWarmupIsBuiltInSeconds() {
+        let viewModel = PlanningViewModel(clock: SystemClock()) { _ in }
+        viewModel.isWarmupEnabled = true
+        viewModel.warmupKind = .duration
+        #expect(viewModel.sessionPlan.warmup == .duration(300))
+    }
+
+    @Test func distanceGoalKeepsMeters() {
+        let viewModel = PlanningViewModel(clock: SystemClock()) { _ in }
+        viewModel.goalKind = .distance
+        viewModel.goalDistanceMeters = 1_500
+        #expect(viewModel.sessionPlan.goal == .distance(meters: 1_500, scope: .totalSession))
+    }
 }

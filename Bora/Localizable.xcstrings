@@ -565,28 +565,6 @@
         }
       }
     },
-    "Distance (m)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distance (m)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distancia (m)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distância (m)"
-          }
-        }
-      }
-    },
     "Done" : {
       "localizations" : {
         "en" : {
@@ -627,28 +605,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duração"
-          }
-        }
-      }
-    },
-    "Duration (min)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duration (min)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duración (min)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duração (min)"
           }
         }
       }
@@ -1599,6 +1555,28 @@
         }
       }
     },
+    "Rest" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rest"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descanso"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descanso"
+          }
+        }
+      }
+    },
     "Rest %lld" : {
       "localizations" : {
         "en" : {
@@ -1617,28 +1595,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Descanso %lld"
-          }
-        }
-      }
-    },
-    "Rest (s)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rest (s)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Descanso (s)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Descanso (s)"
           }
         }
       }
@@ -2193,6 +2149,28 @@
         }
       }
     },
+    "Work" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabajo"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trabalho"
+          }
+        }
+      }
+    },
     "Work %lld" : {
       "localizations" : {
         "en" : {
@@ -2211,28 +2189,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trabalho %lld"
-          }
-        }
-      }
-    },
-    "Work (s)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Work (s)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trabajo (s)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trabalho (s)"
           }
         }
       }

@@ -30,12 +30,12 @@ final class PlanningViewModel {
 
     var goalKind: GoalKind = .distance
     var goalDistanceMeters: Double = 5000
-    var goalDurationMinutes: Double = 30
+    var goalDurationSeconds: Double = 1_800
     var goalDistanceScope: DistanceScope = .totalSession
 
     var isWarmupEnabled = false
     var warmupKind: TargetKind = .duration
-    var warmupDurationMinutes: Double = 5
+    var warmupDurationSeconds: Double = 300
     var warmupDistanceMeters: Double = 500
 
     var isHIITEnabled = false
@@ -49,7 +49,7 @@ final class PlanningViewModel {
 
     var isCooldownEnabled = false
     var cooldownKind: TargetKind = .duration
-    var cooldownDurationMinutes: Double = 5
+    var cooldownDurationSeconds: Double = 300
     var cooldownDistanceMeters: Double = 500
 
     init(clock: ClockProviding, onNext: @escaping (SessionPlan) -> Void) {
@@ -62,14 +62,14 @@ final class PlanningViewModel {
             goal: makeGoal(),
             warmup: isWarmupEnabled ? makeTarget(
                 kind: warmupKind,
-                durationMinutes: warmupDurationMinutes,
-                distanceMeters: warmupDistanceMeters
+                seconds: warmupDurationSeconds,
+                meters: warmupDistanceMeters
             ) : nil,
             hiit: isHIITEnabled ? makeHIITPlan() : nil,
             cooldown: isCooldownEnabled ? makeTarget(
                 kind: cooldownKind,
-                durationMinutes: cooldownDurationMinutes,
-                distanceMeters: cooldownDistanceMeters
+                seconds: cooldownDurationSeconds,
+                meters: cooldownDistanceMeters
             ) : nil
         )
     }
@@ -86,25 +86,21 @@ final class PlanningViewModel {
         case .distance:
             return .distance(meters: goalDistanceMeters, scope: goalDistanceScope)
         case .time:
-            return .time(goalDurationMinutes * 60)
+            return .time(goalDurationSeconds)
         case .free:
             return .free
         }
     }
 
-    private func makeTarget(kind: TargetKind, durationMinutes: Double, distanceMeters: Double) -> BlockTarget {
-        kind == .duration ? .duration(durationMinutes * 60) : .distance(meters: distanceMeters)
-    }
-
     private func makeHIITPlan() -> HIITPlan {
         HIITPlan(
             sets: hiitSets,
-            work: makeHIITTarget(kind: hiitWorkKind, seconds: hiitWorkDurationSeconds, meters: hiitWorkDistanceMeters),
-            rest: makeHIITTarget(kind: hiitRestKind, seconds: hiitRestDurationSeconds, meters: hiitRestDistanceMeters)
+            work: makeTarget(kind: hiitWorkKind, seconds: hiitWorkDurationSeconds, meters: hiitWorkDistanceMeters),
+            rest: makeTarget(kind: hiitRestKind, seconds: hiitRestDurationSeconds, meters: hiitRestDistanceMeters)
         )
     }
 
-    private func makeHIITTarget(kind: TargetKind, seconds: Double, meters: Double) -> BlockTarget {
+    private func makeTarget(kind: TargetKind, seconds: Double, meters: Double) -> BlockTarget {
         kind == .duration ? .duration(seconds) : .distance(meters: meters)
     }
 }
