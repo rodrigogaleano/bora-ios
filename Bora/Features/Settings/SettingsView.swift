@@ -47,11 +47,30 @@ private struct CheckpointsSection: View {
     var body: some View {
         Section {
             Toggle("Transition warning", isOn: $viewModel.isTransitionWarningEnabled)
+            HStack {
+                Text("Progress")
+                Spacer()
+                ForEach(ProgressCheckpoint.allCases, id: \.self) { checkpoint in
+                    Toggle(isOn: binding(for: checkpoint)) {
+                        Text(verbatim: "\(checkpoint.rawValue)%")
+                    }
+                    .toggleStyle(.button)
+                }
+            }
+            Toggle("Final stretch", isOn: $viewModel.isFinalStretchEnabled)
+            Toggle("Kilometer splits", isOn: $viewModel.isKilometerSplitEnabled)
         } header: {
             Text("Checkpoints")
         } footer: {
-            Text("Announces what comes next shortly before each block ends: 10 seconds or 50 meters before.")
+            Text("Progress, final stretch and splits play during work blocks and free runs.")
         }
+    }
+
+    private func binding(for checkpoint: ProgressCheckpoint) -> Binding<Bool> {
+        Binding(
+            get: { viewModel.progressCheckpoints.contains(checkpoint) },
+            set: { viewModel.setProgressCheckpoint(checkpoint, isOn: $0) }
+        )
     }
 }
 

@@ -5,6 +5,9 @@ enum RunCue: Hashable {
     case phaseStarted(String)
     case upcomingTransition(String)
     case runEnding
+    case progress(ProgressCheckpoint)
+    case finalStretch(FinalStretch)
+    case kilometerSplit(Int)
     case runFinished
     case gpsLost
     case gpsRecovered

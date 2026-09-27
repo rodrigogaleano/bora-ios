@@ -11,7 +11,7 @@ struct RunCueResolverTests {
     @Test func everythingDisabledProducesSilentOutput() {
         let cues: [RunCue] = [
             .countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runEnding, .runFinished,
-            .gpsLost, .gpsRecovered
+            .gpsLost, .gpsRecovered, .progress(.half), .finalStretch(.last100Meters), .kilometerSplit(2)
         ]
         for cue in cues {
             #expect(RunCueResolver.output(for: cue, settings: allOff).isSilent)
@@ -87,5 +87,22 @@ struct RunCueResolverTests {
         #expect(output.speech != nil)
         #expect(output.beeps == 2)
         #expect(output.haptic == .light)
+    }
+
+    @Test func checkpointsAreLighterThanTransitions() {
+        let cues: [RunCue] = [.progress(.half), .finalStretch(.lastMinute), .kilometerSplit(1)]
+        for cue in cues {
+            let output = RunCueResolver.output(for: cue, settings: RunSettings())
+
+            #expect(output.speech != nil)
+            #expect(output.beeps == 1)
+            #expect(output.haptic == .light)
+        }
+    }
+
+    @Test func kilometerSplitSpeaksTheDistance() {
+        let output = RunCueResolver.output(for: .kilometerSplit(3), settings: RunSettings())
+
+        #expect(output.speech?.contains("3") == true)
     }
 }

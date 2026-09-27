@@ -278,7 +278,16 @@ final class ExecutionViewModel {
 private extension ExecutionViewModel {
     func announceCurrentPhase() {
         guard let currentPhase else { return }
-        checkpoints = PhaseCheckpoints(phase: currentPhase, nextPhase: nextPhase, config: settings.checkpointConfig)
+        checkpoints = PhaseCheckpoints(
+            phase: currentPhase,
+            nextPhase: nextPhase,
+            config: settings.checkpointConfig,
+            startingAt: PhaseCheckpoints.Progress(
+                elapsed: 0,
+                phaseDistanceMeters: 0,
+                sessionDistanceMeters: totalDistanceMeters
+            )
+        )
         cuePlayer.play(.phaseStarted(currentPhase.kind.displayName))
         startMetronomeIfNeeded()
     }

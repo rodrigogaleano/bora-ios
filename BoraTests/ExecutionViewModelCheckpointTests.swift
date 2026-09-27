@@ -69,4 +69,24 @@ struct ExecutionViewModelCheckpointTests {
 
         #expect(cuePlayer.playedCues == [.phaseStarted("Warmup")])
     }
+
+    @Test func workBlockAnnouncesHalfway() {
+        let clock = PreviewClock()
+        let cuePlayer = PreviewRunCuePlayer()
+        let plan = SessionPlan(
+            goal: .free,
+            warmup: nil,
+            hiit: HIITPlan(sets: 1, work: .distance(meters: 1_000), rest: .duration(60)),
+            cooldown: nil
+        )
+        let viewModel = makeViewModel(plan: plan, clock: clock, cuePlayer: cuePlayer)
+        viewModel.beginTiming()
+
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0)))
+        clock.advance(by: 150)
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0.0046)))
+        viewModel.tick()
+
+        #expect(cuePlayer.playedCues.last == .progress(.half))
+    }
 }
