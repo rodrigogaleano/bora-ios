@@ -89,6 +89,64 @@
         }
       }
     },
+    "%lld kilometers" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kilometer"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kilometers"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kilómetro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kilómetros"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld quilômetro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld quilômetros"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Almost done" : {
       "localizations" : {
         "en" : {
@@ -111,24 +169,24 @@
         }
       }
     },
-    "Announces what comes next shortly before each block ends: 10 seconds or 50 meters before." : {
+    "Almost there" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Announces what comes next shortly before each block ends: 10 seconds or 50 meters before."
+            "value" : "Almost there"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anuncia lo que viene poco antes de que termine cada bloque: 10 segundos o 50 metros antes."
+            "value" : "Falta poco"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anuncia o que vem a seguir pouco antes de cada bloco terminar: 10 segundos ou 50 metros antes."
+            "value" : "Falta pouco"
           }
         }
       }
@@ -683,6 +741,28 @@
         }
       }
     },
+    "Final stretch" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Final stretch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tramo final"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reta final"
+          }
+        }
+      }
+    },
     "Finish" : {
       "localizations" : {
         "en" : {
@@ -991,6 +1071,28 @@
         }
       }
     },
+    "Halfway" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Halfway"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitad"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Metade"
+          }
+        }
+      }
+    },
     "High" : {
       "localizations" : {
         "en" : {
@@ -1097,6 +1199,94 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O intervalado segue as metas de cada bloco; a meta geral é só referência."
+          }
+        }
+      }
+    },
+    "Kilometer splits" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kilometer splits"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parciales por kilómetro"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parciais por km"
+          }
+        }
+      }
+    },
+    "Last 100 meters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last 100 meters"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimos 100 metros"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Últimos 100 metros"
+          }
+        }
+      }
+    },
+    "Last kilometer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last kilometer"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último kilómetro"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último quilômetro"
+          }
+        }
+      }
+    },
+    "Last minute" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last minute"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último minuto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Último minuto"
           }
         }
       }
@@ -1317,6 +1507,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Planejamento"
+          }
+        }
+      }
+    },
+    "Progress" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progress"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progresso"
+          }
+        }
+      }
+    },
+    "Progress, final stretch and splits play during work blocks and free runs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progress, final stretch and splits play during work blocks and free runs."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso, tramo final y parciales suenan en los bloques de esfuerzo y en las carreras libres."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progresso, reta final e parciais tocam nos blocos de esforço e nas corridas livres."
+          }
+        }
+      }
+    },
+    "Quarter done" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quarter done"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un cuarto"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um quarto"
           }
         }
       }
@@ -1691,6 +1947,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Testar avisos"
+          }
+        }
+      }
+    },
+    "Three quarters" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three quarters"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tres cuartos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Três quartos"
           }
         }
       }

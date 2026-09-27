@@ -27,6 +27,9 @@ struct RunSettingsStoreTests {
         settings.metronomeVolume = 0.15
         settings.gpsAccuracy = .economy
         settings.isTransitionWarningEnabled = false
+        settings.progressCheckpoints = [.quarter, .ninety]
+        settings.isFinalStretchEnabled = false
+        settings.isKilometerSplitEnabled = true
 
         UserDefaultsRunSettingsStore(defaults: defaults).save(settings)
 
@@ -57,5 +60,8 @@ struct RunSettingsStoreTests {
         #expect(loaded.gpsAccuracy == .balanced)
         #expect(loaded.metronomeVolume == RunSettings().metronomeVolume)
         #expect(loaded.isTransitionWarningEnabled)
+        #expect(loaded.progressCheckpoints == [.half])
+        #expect(loaded.isFinalStretchEnabled)
+        #expect(!loaded.isKilometerSplitEnabled)
     }
 }

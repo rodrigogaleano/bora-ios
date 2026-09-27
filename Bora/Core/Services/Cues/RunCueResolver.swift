@@ -44,12 +44,46 @@ enum RunCueResolver {
             return Output(speech: String(localized: "Coming up: \(name)"), beeps: 2, haptic: .light)
         case .runEnding:
             return Output(speech: String(localized: "Almost done"), beeps: 2, haptic: .light)
+        case .progress(let checkpoint):
+            return Output(speech: checkpoint.spokenName, beeps: 1, haptic: .light)
+        case .finalStretch(let stretch):
+            return Output(speech: stretch.spokenName, beeps: 1, haptic: .light)
+        case .kilometerSplit(let kilometers):
+            return Output(speech: String(localized: "\(kilometers) kilometers"), beeps: 1, haptic: .light)
         case .runFinished:
             return Output(speech: String(localized: "Finished"), beeps: 3, haptic: .success)
         case .gpsLost:
             return Output(speech: String(localized: "GPS signal lost"), beeps: 2, haptic: .heavy)
         case .gpsRecovered:
             return Output(speech: String(localized: "GPS signal back"), beeps: 1, haptic: .light)
+        }
+    }
+}
+
+private extension ProgressCheckpoint {
+    var spokenName: String {
+        switch self {
+        case .quarter:
+            return String(localized: "Quarter done")
+        case .half:
+            return String(localized: "Halfway")
+        case .threeQuarters:
+            return String(localized: "Three quarters")
+        case .ninety:
+            return String(localized: "Almost there")
+        }
+    }
+}
+
+private extension FinalStretch {
+    var spokenName: String {
+        switch self {
+        case .lastKilometer:
+            return String(localized: "Last kilometer")
+        case .last100Meters:
+            return String(localized: "Last 100 meters")
+        case .lastMinute:
+            return String(localized: "Last minute")
         }
     }
 }

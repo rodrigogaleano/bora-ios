@@ -13,9 +13,17 @@ struct RunSettings: Hashable, Codable {
     var metronomeVolume = 0.5
     var gpsAccuracy = GPSAccuracy.balanced
     var isTransitionWarningEnabled = true
+    var progressCheckpoints: Set<ProgressCheckpoint> = [.half]
+    var isFinalStretchEnabled = true
+    var isKilometerSplitEnabled = false
 
     var checkpointConfig: CheckpointConfig {
-        CheckpointConfig(isTransitionWarningEnabled: isTransitionWarningEnabled)
+        CheckpointConfig(
+            isTransitionWarningEnabled: isTransitionWarningEnabled,
+            progress: progressCheckpoints,
+            isFinalStretchEnabled: isFinalStretchEnabled,
+            isKilometerSplitEnabled: isKilometerSplitEnabled
+        )
     }
 
     static let bpmRange = 140...200
@@ -46,5 +54,11 @@ extension RunSettings {
             ?? defaults.gpsAccuracy
         isTransitionWarningEnabled = try container.decodeIfPresent(Bool.self, forKey: .isTransitionWarningEnabled)
             ?? defaults.isTransitionWarningEnabled
+        progressCheckpoints = try container.decodeIfPresent(Set<ProgressCheckpoint>.self, forKey: .progressCheckpoints)
+            ?? defaults.progressCheckpoints
+        isFinalStretchEnabled = try container.decodeIfPresent(Bool.self, forKey: .isFinalStretchEnabled)
+            ?? defaults.isFinalStretchEnabled
+        isKilometerSplitEnabled = try container.decodeIfPresent(Bool.self, forKey: .isKilometerSplitEnabled)
+            ?? defaults.isKilometerSplitEnabled
     }
 }

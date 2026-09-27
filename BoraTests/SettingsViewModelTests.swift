@@ -54,6 +54,21 @@ struct SettingsViewModelTests {
         #expect(!store.load().isTransitionWarningEnabled)
     }
 
+    @Test func checkpointChoicesPersistImmediately() {
+        let store = PreviewRunSettingsStore()
+        let viewModel = makeViewModel(store: store)
+
+        viewModel.setProgressCheckpoint(.quarter, isOn: true)
+        viewModel.setProgressCheckpoint(.half, isOn: false)
+        viewModel.isFinalStretchEnabled = false
+        viewModel.isKilometerSplitEnabled = true
+
+        let saved = store.load()
+        #expect(saved.progressCheckpoints == [.quarter])
+        #expect(!saved.isFinalStretchEnabled)
+        #expect(saved.isKilometerSplitEnabled)
+    }
+
     @Test func bpmIsClampedToSupportedRange() {
         let store = PreviewRunSettingsStore()
         let viewModel = makeViewModel(store: store)

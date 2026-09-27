@@ -12,6 +12,9 @@ final class SettingsViewModel {
     var isMetronomeEnabled: Bool { didSet { persist() } }
     var gpsAccuracy: GPSAccuracy { didSet { persist() } }
     var isTransitionWarningEnabled: Bool { didSet { persist() } }
+    var progressCheckpoints: Set<ProgressCheckpoint> { didSet { persist() } }
+    var isFinalStretchEnabled: Bool { didSet { persist() } }
+    var isKilometerSplitEnabled: Bool { didSet { persist() } }
     var metronomeVolume: Double {
         didSet {
             let range = RunSettings.metronomeVolumeRange
@@ -47,6 +50,9 @@ final class SettingsViewModel {
         isMetronomeEnabled = settings.isMetronomeEnabled
         gpsAccuracy = settings.gpsAccuracy
         isTransitionWarningEnabled = settings.isTransitionWarningEnabled
+        progressCheckpoints = settings.progressCheckpoints
+        isFinalStretchEnabled = settings.isFinalStretchEnabled
+        isKilometerSplitEnabled = settings.isKilometerSplitEnabled
         metronomeBPM = settings.metronomeBPM
         metronomeVolume = settings.metronomeVolume
     }
@@ -60,7 +66,10 @@ final class SettingsViewModel {
             metronomeBPM: metronomeBPM,
             metronomeVolume: metronomeVolume,
             gpsAccuracy: gpsAccuracy,
-            isTransitionWarningEnabled: isTransitionWarningEnabled
+            isTransitionWarningEnabled: isTransitionWarningEnabled,
+            progressCheckpoints: progressCheckpoints,
+            isFinalStretchEnabled: isFinalStretchEnabled,
+            isKilometerSplitEnabled: isKilometerSplitEnabled
         )
     }
 
@@ -72,6 +81,14 @@ final class SettingsViewModel {
         cuePlayer.play(.phaseStarted(RunPhase.Kind.warmup.displayName))
         if settings.isMetronomeEnabled {
             cuePlayer.startMetronome(bpm: settings.metronomeBPM)
+        }
+    }
+
+    func setProgressCheckpoint(_ checkpoint: ProgressCheckpoint, isOn: Bool) {
+        if isOn {
+            progressCheckpoints.insert(checkpoint)
+        } else {
+            progressCheckpoints.remove(checkpoint)
         }
     }
 
