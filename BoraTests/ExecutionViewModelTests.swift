@@ -198,7 +198,7 @@ struct ExecutionViewModelTests {
         viewModel.tick()
 
         let announced = cuePlayer.playedCues.compactMap { cue -> String? in
-            if case .phaseStarted(let name) = cue { return name }
+            if case .phaseStarted(let name, _) = cue { return name }
             return nil
         }
         #expect(announced == ["Warmup", "Work 1", "Rest 1"])
@@ -270,7 +270,7 @@ struct ExecutionViewModelTests {
 
         viewModel.finish()
 
-        #expect(cuePlayer.playedCues.last == .runFinished)
+        #expect(cuePlayer.playedCues.last == .runFinished())
         #expect(cuePlayer.isTornDown)
     }
 }

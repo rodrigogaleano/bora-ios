@@ -235,6 +235,28 @@
         }
       }
     },
+    "Average" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Average"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Média"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media"
+          }
+        }
+      }
+    },
     "Avg pace" : {
       "localizations" : {
         "en" : {
@@ -1511,6 +1533,28 @@
         }
       }
     },
+    "pace %lld %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pace %1$lld %2$lld"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pace %1$lld e %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ritmo %1$lld y %2$lld"
+          }
+        }
+      }
+    },
     "Pause" : {
       "localizations" : {
         "en" : {
@@ -1555,24 +1599,24 @@
         }
       }
     },
-    "Progress, final stretch and splits play during work blocks and free runs." : {
+    "Progress, final stretch, splits and rep summaries play during work blocks and free runs." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Progress, final stretch and splits play during work blocks and free runs."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Progreso, tramo final y parciales suenan en los bloques de esfuerzo y en las carreras libres."
+            "value" : "Progress, final stretch, splits and rep summaries play during work blocks and free runs."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Progresso, reta final e parciais tocam nos blocos de esforço e nas corridas livres."
+            "value" : "Progresso, reta final, parciais e resumo do tiro tocam nos blocos de esforço e nas corridas livres."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso, tramo final, parciales y resumen de la serie suenan en los bloques de esfuerzo y en las carreras libres."
           }
         }
       }
@@ -1621,6 +1665,50 @@
         }
       }
     },
+    "Rep summary" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rep summary"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumo do tiro"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen de la serie"
+          }
+        }
+      }
+    },
+    "Rep: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rep: %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiro: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serie: %@"
+          }
+        }
+      }
+    },
     "Repeats, fartlek, hills or run/walk" : {
       "localizations" : {
         "en" : {
@@ -1639,6 +1727,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiros, fartlek, subidas ou corrida/caminhada"
+          }
+        }
+      }
+    },
+    "Reps average" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reps average"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Média dos tiros"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Media de las series"
           }
         }
       }
@@ -2277,6 +2387,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trabalho %lld"
+          }
+        }
+      }
+    },
+    "Work pace" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Work pace"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pace dos tiros"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ritmo series"
           }
         }
       }

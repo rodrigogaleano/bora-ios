@@ -27,7 +27,11 @@ final class ResultsViewModel {
     }
 
     var averagePace: String {
-        RunFormatting.pace(secondsPerKm: metrics.averagePaceSecondsPerKm)
+        RunFormatting.pace(secondsPerKm: metrics.effortPaceSecondsPerKm ?? metrics.averagePaceSecondsPerKm)
+    }
+
+    var averagePaceTitle: LocalizedStringResource {
+        metrics.isIntervalSession ? "Work pace" : "Avg pace"
     }
 
     var bestPace: String {
@@ -40,7 +44,7 @@ final class ResultsViewModel {
                 id: index,
                 title: split.phase.displayName,
                 distance: RunFormatting.distance(meters: split.distanceMeters),
-                duration: RunFormatting.duration(split.endedAt.timeIntervalSince(split.startedAt)),
+                duration: RunFormatting.duration(split.duration),
                 pace: RunFormatting.pace(secondsPerKm: split.averagePaceSecondsPerKm)
             )
         }
