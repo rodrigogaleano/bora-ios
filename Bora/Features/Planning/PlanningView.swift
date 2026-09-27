@@ -38,15 +38,13 @@ private struct GoalSection: View {
 
             switch viewModel.goalKind {
             case .distance:
-                TextField("Distance (m)", value: $viewModel.goalDistanceMeters, format: .number)
-                    .keyboardType(.decimalPad)
+                DistanceField("Distance", meters: $viewModel.goalDistanceMeters, initialUnit: .kilometers)
                 Picker("Counts", selection: $viewModel.goalDistanceScope) {
                     Text("Total session").tag(DistanceScope.totalSession)
                     Text("Run only").tag(DistanceScope.runOnly)
                 }
             case .time:
-                TextField("Duration (min)", value: $viewModel.goalDurationMinutes, format: .number)
-                    .keyboardType(.decimalPad)
+                DurationField("Duration", seconds: $viewModel.goalDurationSeconds, maxMinutes: 300)
             case .free:
                 EmptyView()
             }
@@ -63,8 +61,9 @@ private struct WarmupSection: View {
             if viewModel.isWarmupEnabled {
                 TargetFieldsView(
                     kind: $viewModel.warmupKind,
-                    durationValue: $viewModel.warmupDurationMinutes,
-                    durationUnitLabel: "Duration (min)",
+                    durationSeconds: $viewModel.warmupDurationSeconds,
+                    durationTitle: "Duration",
+                    distanceTitle: "Distance",
                     distanceMeters: $viewModel.warmupDistanceMeters
                 )
             }
@@ -82,14 +81,16 @@ private struct HIITSection: View {
                 Stepper("Sets: \(viewModel.hiitSets)", value: $viewModel.hiitSets, in: 1...20)
                 TargetFieldsView(
                     kind: $viewModel.hiitWorkKind,
-                    durationValue: $viewModel.hiitWorkDurationSeconds,
-                    durationUnitLabel: "Work (s)",
+                    durationSeconds: $viewModel.hiitWorkDurationSeconds,
+                    durationTitle: "Work",
+                    distanceTitle: "Work",
                     distanceMeters: $viewModel.hiitWorkDistanceMeters
                 )
                 TargetFieldsView(
                     kind: $viewModel.hiitRestKind,
-                    durationValue: $viewModel.hiitRestDurationSeconds,
-                    durationUnitLabel: "Rest (s)",
+                    durationSeconds: $viewModel.hiitRestDurationSeconds,
+                    durationTitle: "Rest",
+                    distanceTitle: "Rest",
                     distanceMeters: $viewModel.hiitRestDistanceMeters
                 )
             }
@@ -106,8 +107,9 @@ private struct CooldownSection: View {
             if viewModel.isCooldownEnabled {
                 TargetFieldsView(
                     kind: $viewModel.cooldownKind,
-                    durationValue: $viewModel.cooldownDurationMinutes,
-                    durationUnitLabel: "Duration (min)",
+                    durationSeconds: $viewModel.cooldownDurationSeconds,
+                    durationTitle: "Duration",
+                    distanceTitle: "Distance",
                     distanceMeters: $viewModel.cooldownDistanceMeters
                 )
             }
@@ -117,8 +119,9 @@ private struct CooldownSection: View {
 
 private struct TargetFieldsView: View {
     @Binding var kind: PlanningViewModel.TargetKind
-    @Binding var durationValue: Double
-    let durationUnitLabel: LocalizedStringKey
+    @Binding var durationSeconds: Double
+    let durationTitle: LocalizedStringKey
+    let distanceTitle: LocalizedStringKey
     @Binding var distanceMeters: Double
 
     var body: some View {
@@ -131,11 +134,9 @@ private struct TargetFieldsView: View {
 
         switch kind {
         case .duration:
-            TextField(durationUnitLabel, value: $durationValue, format: .number)
-                .keyboardType(.decimalPad)
+            DurationField(durationTitle, seconds: $durationSeconds)
         case .distance:
-            TextField("Distance (m)", value: $distanceMeters, format: .number)
-                .keyboardType(.decimalPad)
+            DistanceField(distanceTitle, meters: $distanceMeters, initialUnit: .meters)
         }
     }
 }
