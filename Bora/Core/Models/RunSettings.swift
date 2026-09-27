@@ -16,13 +16,15 @@ struct RunSettings: Hashable, Codable {
     var progressCheckpoints: Set<ProgressCheckpoint> = [.half]
     var isFinalStretchEnabled = true
     var isKilometerSplitEnabled = false
+    var isRepSummaryEnabled = true
 
     var checkpointConfig: CheckpointConfig {
         CheckpointConfig(
             isTransitionWarningEnabled: isTransitionWarningEnabled,
             progress: progressCheckpoints,
             isFinalStretchEnabled: isFinalStretchEnabled,
-            isKilometerSplitEnabled: isKilometerSplitEnabled
+            isKilometerSplitEnabled: isKilometerSplitEnabled,
+            isRepSummaryEnabled: isRepSummaryEnabled
         )
     }
 
@@ -60,5 +62,7 @@ extension RunSettings {
             ?? defaults.isFinalStretchEnabled
         isKilometerSplitEnabled = try container.decodeIfPresent(Bool.self, forKey: .isKilometerSplitEnabled)
             ?? defaults.isKilometerSplitEnabled
+        isRepSummaryEnabled = try container.decodeIfPresent(Bool.self, forKey: .isRepSummaryEnabled)
+            ?? defaults.isRepSummaryEnabled
     }
 }

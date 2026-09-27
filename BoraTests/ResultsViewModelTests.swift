@@ -15,6 +15,7 @@ struct ResultsViewModelTests {
             phase: phase,
             startedAt: referenceDate,
             endedAt: referenceDate.addingTimeInterval(seconds),
+            duration: seconds,
             distanceMeters: distanceMeters,
             averagePaceSecondsPerKm: paceSecondsPerKm
         )
@@ -58,6 +59,33 @@ struct ResultsViewModelTests {
         let metrics = SessionMetrics(startedAt: referenceDate, averagePaceSecondsPerKm: nil)
 
         #expect(makeViewModel(metrics: metrics).averagePace == RunFormatting.placeholder)
+    }
+
+    @Test func averagePaceLeavesOutWarmupAndRest() {
+        let metrics = SessionMetrics(
+            startedAt: referenceDate,
+            averagePaceSecondsPerKm: 400,
+            splits: [
+                makeSplit(phase: .warmup, seconds: 600, distanceMeters: 1_500, paceSecondsPerKm: 400),
+                makeSplit(phase: .freeRun, seconds: 1_500, distanceMeters: 5_000, paceSecondsPerKm: 300)
+            ]
+        )
+        let viewModel = makeViewModel(metrics: metrics)
+
+        #expect(viewModel.averagePace == "05:00 /km")
+        #expect(String(localized: viewModel.averagePaceTitle) == "Avg pace")
+    }
+
+    @Test func intervalSessionShowsWorkPace() {
+        let metrics = SessionMetrics(
+            startedAt: referenceDate,
+            splits: [
+                makeSplit(phase: .work(setIndex: 0), seconds: 90, distanceMeters: 400, paceSecondsPerKm: 225),
+                makeSplit(phase: .rest(setIndex: 0), seconds: 90, distanceMeters: 150, paceSecondsPerKm: 600)
+            ]
+        )
+
+        #expect(String(localized: makeViewModel(metrics: metrics).averagePaceTitle) == "Work pace")
     }
 
     @Test func durationFormatsWithHoursOnlyWhenPastOneHour() {

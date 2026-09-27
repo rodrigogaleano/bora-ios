@@ -62,11 +62,13 @@ struct SettingsViewModelTests {
         viewModel.setProgressCheckpoint(.half, isOn: false)
         viewModel.isFinalStretchEnabled = false
         viewModel.isKilometerSplitEnabled = true
+        viewModel.isRepSummaryEnabled = false
 
         let saved = store.load()
         #expect(saved.progressCheckpoints == [.quarter])
         #expect(!saved.isFinalStretchEnabled)
         #expect(saved.isKilometerSplitEnabled)
+        #expect(!saved.isRepSummaryEnabled)
     }
 
     @Test func bpmIsClampedToSupportedRange() {

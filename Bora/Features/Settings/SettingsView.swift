@@ -59,10 +59,11 @@ private struct CheckpointsSection: View {
             }
             Toggle("Final stretch", isOn: $viewModel.isFinalStretchEnabled)
             Toggle("Kilometer splits", isOn: $viewModel.isKilometerSplitEnabled)
+            Toggle("Rep summary", isOn: $viewModel.isRepSummaryEnabled)
         } header: {
             Text("Checkpoints")
         } footer: {
-            Text("Progress, final stretch and splits play during work blocks and free runs.")
+            Text("Progress, final stretch, splits and rep summaries play during work blocks and free runs.")
         }
     }
 

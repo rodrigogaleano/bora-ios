@@ -15,6 +15,7 @@ final class SettingsViewModel {
     var progressCheckpoints: Set<ProgressCheckpoint> { didSet { persist() } }
     var isFinalStretchEnabled: Bool { didSet { persist() } }
     var isKilometerSplitEnabled: Bool { didSet { persist() } }
+    var isRepSummaryEnabled: Bool { didSet { persist() } }
     var metronomeVolume: Double {
         didSet {
             let range = RunSettings.metronomeVolumeRange
@@ -53,6 +54,7 @@ final class SettingsViewModel {
         progressCheckpoints = settings.progressCheckpoints
         isFinalStretchEnabled = settings.isFinalStretchEnabled
         isKilometerSplitEnabled = settings.isKilometerSplitEnabled
+        isRepSummaryEnabled = settings.isRepSummaryEnabled
         metronomeBPM = settings.metronomeBPM
         metronomeVolume = settings.metronomeVolume
     }
@@ -69,7 +71,8 @@ final class SettingsViewModel {
             isTransitionWarningEnabled: isTransitionWarningEnabled,
             progressCheckpoints: progressCheckpoints,
             isFinalStretchEnabled: isFinalStretchEnabled,
-            isKilometerSplitEnabled: isKilometerSplitEnabled
+            isKilometerSplitEnabled: isKilometerSplitEnabled,
+            isRepSummaryEnabled: isRepSummaryEnabled
         )
     }
 

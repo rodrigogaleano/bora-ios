@@ -57,7 +57,7 @@ struct PhaseCheckpoints {
         if config.isTransitionWarningEnabled, let gate {
             points += Self.transitionPoints(gate: gate, nextPhase: nextPhase)
         }
-        if phase.isEffort {
+        if phase.kind.isEffort {
             if config.isFinalStretchEnabled, let gate {
                 points += Self.finalStretchPoints(gate: gate)
             }
@@ -177,15 +177,6 @@ private extension FinalStretch {
 }
 
 private extension RunPhase {
-    var isEffort: Bool {
-        switch self {
-        case .work, .freeRun:
-            return true
-        case .warmup, .rest, .cooldown:
-            return false
-        }
-    }
-
     var gate: PhaseCheckpoints.Gate? {
         switch self {
         case .warmup(let target), .cooldown(let target), .work(_, let target), .rest(_, let target):

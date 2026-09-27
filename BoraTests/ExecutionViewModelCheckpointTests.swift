@@ -87,6 +87,10 @@ struct ExecutionViewModelCheckpointTests {
         viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0.0046)))
         viewModel.tick()
 
-        #expect(cuePlayer.playedCues.last == .progress(.half))
+        guard case .progress(.half, let pace) = cuePlayer.playedCues.last else {
+            Issue.record("Expected the halfway cue")
+            return
+        }
+        #expect(pace != nil)
     }
 }

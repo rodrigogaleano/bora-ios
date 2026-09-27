@@ -24,6 +24,7 @@ final class ExecutionViewModel {
     private(set) var currentPhaseIndex = 0
     private(set) var runState: RunState = .running
     private var checkpoints: PhaseCheckpoints?
+    private var pacer = PhasePacer()
 
     private var sessionStartedAt: Date?
     private var phaseStartedAt: Date?
@@ -215,12 +216,13 @@ final class ExecutionViewModel {
             completeRun()
             return
         }
+        let recap = repRecap()
         currentPhaseIndex += 1
         phaseStartedAt = clock.now
         elapsedInPhase = 0
         phaseDistanceMeters = 0
         phasePausedAccumulatedSeconds = 0
-        announceCurrentPhase()
+        announceCurrentPhase(recap: recap)
         publishActivity(force: true)
     }
 
@@ -234,6 +236,7 @@ final class ExecutionViewModel {
                 phase: currentPhase.kind,
                 startedAt: phaseStartedAt,
                 endedAt: clock.now,
+                duration: elapsedInPhase,
                 distanceMeters: phaseDistanceMeters,
                 averagePaceSecondsPerKm: pace
             )
@@ -252,9 +255,6 @@ final class ExecutionViewModel {
         tickTask?.cancel()
         locationTask?.cancel()
         locationProvider.stopLocationUpdates()
-        cuePlayer.play(.runFinished)
-        cuePlayer.stopMetronome()
-        cuePlayer.teardown()
 
         let averagePace = totalDistanceMeters > 0
             ? elapsedTotal / (totalDistanceMeters / 1000)
@@ -268,6 +268,12 @@ final class ExecutionViewModel {
             maxSpeedMetersPerSecond: maxSpeedMetersPerSecond,
             splits: splits
         )
+        let finalPace = metrics.effortPaceSecondsPerKm.map {
+            FinalPace(secondsPerKm: $0, isRepsOnly: metrics.isIntervalSession)
+        }
+        cuePlayer.play(.runFinished(pace: finalPace))
+        cuePlayer.stopMetronome()
+        cuePlayer.teardown()
         endActivity(metrics: metrics)
         onNext(metrics)
     }
@@ -276,8 +282,9 @@ final class ExecutionViewModel {
 // MARK: - Cues
 
 private extension ExecutionViewModel {
-    func announceCurrentPhase() {
+    func announceCurrentPhase(recap: RepRecap? = nil) {
         guard let currentPhase else { return }
+        pacer = PhasePacer()
         checkpoints = PhaseCheckpoints(
             phase: currentPhase,
             nextPhase: nextPhase,
@@ -288,7 +295,7 @@ private extension ExecutionViewModel {
                 sessionDistanceMeters: totalDistanceMeters
             )
         )
-        cuePlayer.play(.phaseStarted(currentPhase.kind.displayName))
+        cuePlayer.play(.phaseStarted(currentPhase.kind.displayName, recap: recap))
         startMetronomeIfNeeded()
     }
 
@@ -309,8 +316,20 @@ private extension ExecutionViewModel {
             sessionDistanceMeters: totalDistanceMeters
         )
         if let cue = checkpoints?.cue(for: progress) {
-            cuePlayer.play(cue)
+            cuePlayer.play(
+                pacer.pacing(cue, elapsed: elapsedInPhase, meters: phaseDistanceMeters, isSignalLost: isGPSSignalLost)
+            )
         }
+    }
+
+    func repRecap() -> RepRecap? {
+        guard settings.checkpointConfig.isRepSummaryEnabled, let currentPhase else { return nil }
+        return PhasePacer.recap(
+            for: currentPhase,
+            elapsed: elapsedInPhase,
+            meters: phaseDistanceMeters,
+            isSignalLost: isGPSSignalLost
+        )
     }
 }
 

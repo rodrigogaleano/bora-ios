@@ -2,13 +2,13 @@
 /// the caller — the player doesn't know about `RunPhase` or the string catalog.
 enum RunCue: Hashable {
     case countdownTick(Int)
-    case phaseStarted(String)
+    case phaseStarted(String, recap: RepRecap? = nil)
     case upcomingTransition(String)
     case runEnding
-    case progress(ProgressCheckpoint)
+    case progress(ProgressCheckpoint, pace: Double? = nil)
     case finalStretch(FinalStretch)
-    case kilometerSplit(Int)
-    case runFinished
+    case kilometerSplit(Int, pace: Double? = nil)
+    case runFinished(recap: RepRecap? = nil, pace: FinalPace? = nil)
     case gpsLost
     case gpsRecovered
 }

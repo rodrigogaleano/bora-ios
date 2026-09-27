@@ -5,4 +5,5 @@ struct CheckpointConfig: Hashable {
     var progress: Set<ProgressCheckpoint> = [.half]
     var isFinalStretchEnabled = true
     var isKilometerSplitEnabled = false
+    var isRepSummaryEnabled = true
 }

@@ -16,6 +16,17 @@ enum RunPhase: Hashable {
     case cooldown(target: BlockTarget)
 }
 
+extension RunPhase.Kind {
+    var isEffort: Bool {
+        switch self {
+        case .work, .freeRun:
+            return true
+        case .warmup, .rest, .cooldown:
+            return false
+        }
+    }
+}
+
 extension RunPhase {
     var kind: Kind {
         switch self {

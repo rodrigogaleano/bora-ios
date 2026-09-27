@@ -44,7 +44,7 @@ struct ResultsView: View {
 
             HStack(spacing: 16) {
                 metricTile(title: "Duration", value: viewModel.totalDuration)
-                metricTile(title: "Avg pace", value: viewModel.averagePace)
+                metricTile(title: viewModel.averagePaceTitle, value: viewModel.averagePace)
                 metricTile(title: "Best pace", value: viewModel.bestPace)
             }
         }
@@ -60,7 +60,7 @@ struct ResultsView: View {
         }
     }
 
-    private func metricTile(title: LocalizedStringKey, value: String) -> some View {
+    private func metricTile(title: LocalizedStringResource, value: String) -> some View {
         VStack(spacing: 2) {
             Text(value)
                 .font(.title3.monospacedDigit())

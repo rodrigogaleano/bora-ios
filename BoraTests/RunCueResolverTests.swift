@@ -10,7 +10,7 @@ struct RunCueResolverTests {
 
     @Test func everythingDisabledProducesSilentOutput() {
         let cues: [RunCue] = [
-            .countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runEnding, .runFinished,
+            .countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runEnding, .runFinished(),
             .gpsLost, .gpsRecovered, .progress(.half), .finalStretch(.last100Meters), .kilometerSplit(2)
         ]
         for cue in cues {
@@ -59,7 +59,7 @@ struct RunCueResolverTests {
         var settings = RunSettings()
         settings.isHapticsEnabled = false
 
-        let output = RunCueResolver.output(for: .runFinished, settings: settings)
+        let output = RunCueResolver.output(for: .runFinished(), settings: settings)
 
         #expect(output.haptic == nil)
         #expect(output.beeps == 3)
@@ -104,5 +104,32 @@ struct RunCueResolverTests {
         let output = RunCueResolver.output(for: .kilometerSplit(3), settings: RunSettings())
 
         #expect(output.speech?.contains("3") == true)
+    }
+
+    @Test func nextBlockCarriesTheRepSummary() {
+        let recap = RepRecap(measure: .time(92), paceSecondsPerKm: 230)
+        let output = RunCueResolver.output(for: .phaseStarted("Rest 3", recap: recap), settings: RunSettings())
+
+        #expect(output.speech == "Rest 3. Rep: 1 minute, 32 seconds, pace 3 50")
+    }
+
+    @Test func timedRepSpeaksTheDistance() {
+        let recap = RepRecap(measure: .distance(meters: 283), paceSecondsPerKm: nil)
+        let output = RunCueResolver.output(for: .phaseStarted("Rest 1", recap: recap), settings: RunSettings())
+
+        #expect(output.speech == "Rest 1. Rep: \(RunSpeechFormatting.distance(meters: 283))")
+    }
+
+    @Test func kilometerSplitSpeaksItsPace() {
+        let output = RunCueResolver.output(for: .kilometerSplit(5, pace: 342), settings: RunSettings())
+
+        #expect(output.speech == "5 kilometers, pace 5 42")
+    }
+
+    @Test func finishedSpeaksTheRepsAverage() {
+        let cue = RunCue.runFinished(pace: FinalPace(secondsPerKm: 232, isRepsOnly: true))
+        let output = RunCueResolver.output(for: cue, settings: RunSettings())
+
+        #expect(output.speech == "Finished. Reps average, pace 3 52")
     }
 }
