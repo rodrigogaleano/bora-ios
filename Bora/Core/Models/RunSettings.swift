@@ -12,6 +12,11 @@ struct RunSettings: Hashable, Codable {
     /// Relative to the metronome's full click level, so the slider only ever turns it down.
     var metronomeVolume = 0.5
     var gpsAccuracy = GPSAccuracy.balanced
+    var isTransitionWarningEnabled = true
+
+    var checkpointConfig: CheckpointConfig {
+        CheckpointConfig(isTransitionWarningEnabled: isTransitionWarningEnabled)
+    }
 
     static let bpmRange = 140...200
     /// Floor above zero on purpose: the toggle is how you turn the metronome off, and a
@@ -39,5 +44,7 @@ extension RunSettings {
             ?? defaults.metronomeVolume
         gpsAccuracy = try container.decodeIfPresent(GPSAccuracy.self, forKey: .gpsAccuracy)
             ?? defaults.gpsAccuracy
+        isTransitionWarningEnabled = try container.decodeIfPresent(Bool.self, forKey: .isTransitionWarningEnabled)
+            ?? defaults.isTransitionWarningEnabled
     }
 }

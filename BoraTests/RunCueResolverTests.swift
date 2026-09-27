@@ -10,7 +10,7 @@ struct RunCueResolverTests {
 
     @Test func everythingDisabledProducesSilentOutput() {
         let cues: [RunCue] = [
-            .countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runFinished,
+            .countdownTick(3), .phaseStarted("Warmup"), .upcomingTransition("Rest 1"), .runEnding, .runFinished,
             .gpsLost, .gpsRecovered
         ]
         for cue in cues {
@@ -79,5 +79,13 @@ struct RunCueResolverTests {
 
         #expect(output.speech?.contains("Rest 2") == true)
         #expect(output.beeps == 2)
+    }
+
+    @Test func runEndingIsAnnouncedLikeATransition() {
+        let output = RunCueResolver.output(for: .runEnding, settings: RunSettings())
+
+        #expect(output.speech != nil)
+        #expect(output.beeps == 2)
+        #expect(output.haptic == .light)
     }
 }

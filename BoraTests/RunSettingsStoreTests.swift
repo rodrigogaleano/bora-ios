@@ -26,6 +26,7 @@ struct RunSettingsStoreTests {
         settings.metronomeBPM = 185
         settings.metronomeVolume = 0.15
         settings.gpsAccuracy = .economy
+        settings.isTransitionWarningEnabled = false
 
         UserDefaultsRunSettingsStore(defaults: defaults).save(settings)
 
@@ -55,5 +56,6 @@ struct RunSettingsStoreTests {
         #expect(loaded.metronomeBPM == 180)
         #expect(loaded.gpsAccuracy == .balanced)
         #expect(loaded.metronomeVolume == RunSettings().metronomeVolume)
+        #expect(loaded.isTransitionWarningEnabled)
     }
 }

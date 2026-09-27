@@ -42,6 +42,8 @@ enum RunCueResolver {
             return Output(speech: name, beeps: 1, haptic: .heavy)
         case .upcomingTransition(let name):
             return Output(speech: String(localized: "Coming up: \(name)"), beeps: 2, haptic: .light)
+        case .runEnding:
+            return Output(speech: String(localized: "Almost done"), beeps: 2, haptic: .light)
         case .runFinished:
             return Output(speech: String(localized: "Finished"), beeps: 3, haptic: .success)
         case .gpsLost:
