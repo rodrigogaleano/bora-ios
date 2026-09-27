@@ -25,6 +25,7 @@ final class PlanningViewModel {
         }
     }
 
+    let workoutType: WorkoutType
     private let clock: ClockProviding
     private let onNext: (SessionPlan) -> Void
 
@@ -52,10 +53,22 @@ final class PlanningViewModel {
     var cooldownDurationSeconds: Double = 300
     var cooldownDistanceMeters: Double = 500
 
-    init(clock: ClockProviding, onNext: @escaping (SessionPlan) -> Void) {
+    init(workoutType: WorkoutType, clock: ClockProviding, onNext: @escaping (SessionPlan) -> Void) {
+        self.workoutType = workoutType
         self.clock = clock
         self.onNext = onNext
+        applyDefaults()
     }
+
+    var title: String { workoutType.title }
+
+    var showsGoal: Bool {
+        workoutType == .easyRun || workoutType == .longRun
+    }
+
+    var goalKinds: [GoalKind] { [.distance, .time] }
+
+    var showsHIIT: Bool { workoutType == .intervals }
 
     var sessionPlan: SessionPlan {
         SessionPlan(
@@ -65,7 +78,7 @@ final class PlanningViewModel {
                 seconds: warmupDurationSeconds,
                 meters: warmupDistanceMeters
             ) : nil,
-            hiit: isHIITEnabled ? makeHIITPlan() : nil,
+            hiit: isHIITEnabled && showsHIIT ? makeHIITPlan() : nil,
             cooldown: isCooldownEnabled ? makeTarget(
                 kind: cooldownKind,
                 seconds: cooldownDurationSeconds,
@@ -81,7 +94,33 @@ final class PlanningViewModel {
         onNext(sessionPlan)
     }
 
+    private func applyDefaults() {
+        switch workoutType {
+        case .easyRun:
+            goalKind = .time
+            goalDurationSeconds = 2_400
+        case .longRun:
+            goalKind = .distance
+            goalDistanceMeters = 10_000
+        case .intervals:
+            goalKind = .free
+            isHIITEnabled = true
+            hiitSets = 6
+            hiitWorkKind = .distance
+            hiitWorkDistanceMeters = 400
+            hiitRestKind = .duration
+            hiitRestDurationSeconds = 90
+            isWarmupEnabled = true
+            warmupDurationSeconds = 600
+            isCooldownEnabled = true
+            cooldownDurationSeconds = 600
+        case .freeRun:
+            goalKind = .free
+        }
+    }
+
     private func makeGoal() -> SessionGoal {
+        guard showsGoal else { return .free }
         switch goalKind {
         case .distance:
             return .distance(meters: goalDistanceMeters, scope: goalDistanceScope)

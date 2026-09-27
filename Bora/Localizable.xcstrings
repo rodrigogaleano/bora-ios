@@ -477,6 +477,28 @@
         }
       }
     },
+    "Continuous run at an easy pace" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuous run at an easy pace"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carrera continua a ritmo suave"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrida contínua em ritmo leve"
+          }
+        }
+      }
+    },
     "Cooldown" : {
       "localizations" : {
         "en" : {
@@ -605,6 +627,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Duração"
+          }
+        }
+      }
+    },
+    "Easy run" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Easy run"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rodaje"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rodagem"
           }
         }
       }
@@ -769,6 +813,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Free"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Libre"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Livre"
+          }
+        }
+      }
+    },
+    "Free run" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free run"
           }
         },
         "es" : {
@@ -1071,28 +1137,6 @@
         }
       }
     },
-    "HIIT" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HIIT"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HIIT"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HIIT"
-          }
-        }
-      }
-    },
     "Haptics" : {
       "localizations" : {
         "en" : {
@@ -1247,6 +1291,28 @@
         }
       }
     },
+    "Long run" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Long run"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tirada larga"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Longão"
+          }
+        }
+      }
+    },
     "Metronome" : {
       "localizations" : {
         "en" : {
@@ -1331,6 +1397,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avançar"
+          }
+        }
+      }
+    },
+    "No goal, just run" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No goal, just run"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin meta, solo correr"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem meta, só correr"
           }
         }
       }
@@ -1445,28 +1533,6 @@
         }
       }
     },
-    "Planning" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planning"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planificación"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planejamento"
-          }
-        }
-      }
-    },
     "Progress" : {
       "localizations" : {
         "en" : {
@@ -1551,6 +1617,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Refazer"
+          }
+        }
+      }
+    },
+    "Repeats, fartlek, hills or run/walk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeats, fartlek, hills or run/walk"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series, fartlek, cuestas o correr/caminar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiros, fartlek, subidas ou corrida/caminhada"
           }
         }
       }
@@ -2189,6 +2277,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trabalho %lld"
+          }
+        }
+      }
+    },
+    "Workouts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workouts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamientos"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treinos"
+          }
+        }
+      }
+    },
+    "Your longest run of the week" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your longest run of the week"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu carrera más larga de la semana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua corrida mais longa da semana"
           }
         }
       }

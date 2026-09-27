@@ -9,9 +9,13 @@ struct PlanningView: View {
 
     var body: some View {
         Form {
-            GoalSection(viewModel: viewModel)
+            if viewModel.showsGoal {
+                GoalSection(viewModel: viewModel)
+            }
             WarmupSection(viewModel: viewModel)
-            HIITSection(viewModel: viewModel)
+            if viewModel.showsHIIT {
+                HIITSection(viewModel: viewModel)
+            }
             CooldownSection(viewModel: viewModel)
             HStack {
                 Spacer()
@@ -20,7 +24,7 @@ struct PlanningView: View {
             }
             .listRowBackground(Color.clear)
         }
-        .navigationTitle("Planning")
+        .navigationTitle(viewModel.title)
     }
 }
 
@@ -30,7 +34,7 @@ private struct GoalSection: View {
     var body: some View {
         Section("Goal") {
             Picker("Type", selection: $viewModel.goalKind) {
-                ForEach(PlanningViewModel.GoalKind.allCases, id: \.self) { kind in
+                ForEach(viewModel.goalKinds, id: \.self) { kind in
                     Text(LocalizedStringKey(kind.label)).tag(kind)
                 }
             }
@@ -75,25 +79,22 @@ private struct HIITSection: View {
     @Bindable var viewModel: PlanningViewModel
 
     var body: some View {
-        Section {
-            Toggle("HIIT", isOn: $viewModel.isHIITEnabled)
-            if viewModel.isHIITEnabled {
-                Stepper("Sets: \(viewModel.hiitSets)", value: $viewModel.hiitSets, in: 1...20)
-                TargetFieldsView(
-                    kind: $viewModel.hiitWorkKind,
-                    durationSeconds: $viewModel.hiitWorkDurationSeconds,
-                    durationTitle: "Work",
-                    distanceTitle: "Work",
-                    distanceMeters: $viewModel.hiitWorkDistanceMeters
-                )
-                TargetFieldsView(
-                    kind: $viewModel.hiitRestKind,
-                    durationSeconds: $viewModel.hiitRestDurationSeconds,
-                    durationTitle: "Rest",
-                    distanceTitle: "Rest",
-                    distanceMeters: $viewModel.hiitRestDistanceMeters
-                )
-            }
+        Section("Intervals") {
+            Stepper("Sets: \(viewModel.hiitSets)", value: $viewModel.hiitSets, in: 1...20)
+            TargetFieldsView(
+                kind: $viewModel.hiitWorkKind,
+                durationSeconds: $viewModel.hiitWorkDurationSeconds,
+                durationTitle: "Work",
+                distanceTitle: "Work",
+                distanceMeters: $viewModel.hiitWorkDistanceMeters
+            )
+            TargetFieldsView(
+                kind: $viewModel.hiitRestKind,
+                durationSeconds: $viewModel.hiitRestDurationSeconds,
+                durationTitle: "Rest",
+                distanceTitle: "Rest",
+                distanceMeters: $viewModel.hiitRestDistanceMeters
+            )
         }
     }
 }
