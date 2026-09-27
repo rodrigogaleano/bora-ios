@@ -11,14 +11,21 @@ struct RootCoordinatorView: View {
 
     var body: some View {
         NavigationStack(path: $coordinator.path) {
-            PlanningView(
-                viewModel: PlanningViewModel(
-                    clock: dependencies.clock,
-                    onNext: { plan in coordinator.push(.summary(plan)) }
+            WorkoutTypeView(
+                viewModel: WorkoutTypeViewModel(
+                    onSelect: { type in coordinator.push(.planning(type)) }
                 )
             )
             .navigationDestination(for: AppRoute.self) { route in
                 switch route {
+                case .planning(let workoutType):
+                    PlanningView(
+                        viewModel: PlanningViewModel(
+                            workoutType: workoutType,
+                            clock: dependencies.clock,
+                            onNext: { plan in coordinator.push(.summary(plan)) }
+                        )
+                    )
                 case .summary(let plan):
                     SummaryView(
                         viewModel: SummaryViewModel(
