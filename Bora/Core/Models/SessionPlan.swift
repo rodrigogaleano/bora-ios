@@ -1,6 +1,6 @@
 import Foundation
 
-struct HIITPlan: Hashable {
+struct HIITPlan: Codable, Hashable {
     var sets: Int
     var work: BlockTarget
     var rest: BlockTarget
@@ -12,7 +12,7 @@ extension HIITPlan {
     }
 }
 
-struct SessionPlan: Hashable {
+struct SessionPlan: Codable, Hashable {
     var goal: SessionGoal
     var warmup: BlockTarget?
     var hiit: HIITPlan?

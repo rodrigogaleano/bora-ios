@@ -4,9 +4,10 @@ import Testing
 struct PlanningViewModelTests {
     private func makeViewModel(
         _ workoutType: WorkoutType,
+        lastWorkouts: PreviewLastWorkoutStore = PreviewLastWorkoutStore(),
         onNext: @escaping (SessionPlan) -> Void = { _ in }
     ) -> PlanningViewModel {
-        PlanningViewModel(workoutType: workoutType, clock: SystemClock(), onNext: onNext)
+        PlanningViewModel(workoutType: workoutType, clock: SystemClock(), lastWorkouts: lastWorkouts, onNext: onNext)
     }
 
     @Test func nextForwardsBuiltPlanWhenValid() {
@@ -98,5 +99,42 @@ struct PlanningViewModelTests {
         #expect(makeViewModel(.easyRun).showsProgressCheckpoints)
         #expect(makeViewModel(.intervals).showsRepSummary)
         #expect(!makeViewModel(.longRun).showsRepSummary)
+    }
+
+    @Test func reopensTheLastIntervalsWorkout() {
+        var checkpoints = WorkoutType.intervals.defaultCheckpoints
+        checkpoints.isKilometerSplitEnabled = true
+        let saved = SessionPlan(
+            goal: .free,
+            warmup: .distance(meters: 1_000),
+            hiit: HIITPlan(sets: 8, work: .distance(meters: 1_000), rest: .duration(120)),
+            cooldown: nil,
+            workoutType: .intervals,
+            checkpoints: checkpoints
+        )
+        let viewModel = makeViewModel(.intervals, lastWorkouts: PreviewLastWorkoutStore(plans: [.intervals: saved]))
+
+        #expect(viewModel.hiitSets == 8)
+        #expect(!viewModel.isCooldownEnabled)
+        #expect(viewModel.sessionPlan == saved)
+    }
+
+    @Test func reopensTheLastLongRunGoal() {
+        let saved = SessionPlan(goal: .time(5_400), workoutType: .longRun)
+        let viewModel = makeViewModel(.longRun, lastWorkouts: PreviewLastWorkoutStore(plans: [.longRun: saved]))
+
+        #expect(viewModel.goalKind == .time)
+        #expect(viewModel.goalDurationSeconds == 5_400)
+    }
+
+    @Test func nextRemembersThePlanForItsType() {
+        let store = PreviewLastWorkoutStore()
+        let viewModel = makeViewModel(.intervals, lastWorkouts: store)
+        viewModel.hiitSets = 8
+
+        viewModel.next()
+
+        #expect(store.load(.intervals)?.hiit?.sets == 8)
+        #expect(store.load(.longRun) == nil)
     }
 }

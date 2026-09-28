@@ -1,6 +1,6 @@
 import Foundation
 
-enum WorkoutType: CaseIterable, Hashable {
+enum WorkoutType: String, CaseIterable, Codable, Hashable {
     case easyRun
     case longRun
     case intervals

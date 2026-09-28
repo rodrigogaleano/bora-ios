@@ -1,6 +1,6 @@
 import Foundation
 
-enum BlockTarget: Hashable {
+enum BlockTarget: Codable, Hashable {
     case duration(TimeInterval)
     case distance(meters: Double)
 }
