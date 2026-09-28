@@ -83,7 +83,8 @@ final class PlanningViewModel {
                 kind: cooldownKind,
                 seconds: cooldownDurationSeconds,
                 meters: cooldownDistanceMeters
-            ) : nil
+            ) : nil,
+            workoutType: workoutType
         )
     }
 

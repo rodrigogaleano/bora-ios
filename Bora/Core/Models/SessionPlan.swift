@@ -17,6 +17,7 @@ struct SessionPlan: Hashable {
     var warmup: BlockTarget?
     var hiit: HIITPlan?
     var cooldown: BlockTarget?
+    var workoutType: WorkoutType?
 }
 
 extension SessionPlan {

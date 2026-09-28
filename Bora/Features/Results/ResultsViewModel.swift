@@ -10,11 +10,21 @@ final class ResultsViewModel {
         let pace: String
     }
 
+    let plan: SessionPlan
     let metrics: SessionMetrics
+    private let snapshotter: RouteSnapshotProviding
     private let onDone: () -> Void
+    var isSharePresented = false
 
-    init(metrics: SessionMetrics, onDone: @escaping () -> Void) {
+    init(
+        plan: SessionPlan,
+        metrics: SessionMetrics,
+        snapshotter: RouteSnapshotProviding,
+        onDone: @escaping () -> Void
+    ) {
+        self.plan = plan
         self.metrics = metrics
+        self.snapshotter = snapshotter
         self.onDone = onDone
     }
 
@@ -27,11 +37,11 @@ final class ResultsViewModel {
     }
 
     var averagePace: String {
-        RunFormatting.pace(secondsPerKm: metrics.effortPaceSecondsPerKm ?? metrics.averagePaceSecondsPerKm)
+        RunFormatting.pace(secondsPerKm: metrics.headlinePaceSecondsPerKm)
     }
 
     var averagePaceTitle: LocalizedStringResource {
-        metrics.isIntervalSession ? "Work pace" : "Avg pace"
+        metrics.headlinePaceTitle
     }
 
     var bestPace: String {
@@ -48,6 +58,14 @@ final class ResultsViewModel {
                 pace: RunFormatting.pace(secondsPerKm: split.averagePaceSecondsPerKm)
             )
         }
+    }
+
+    func share() {
+        isSharePresented = true
+    }
+
+    func makeShareViewModel() -> ShareViewModel {
+        ShareViewModel(plan: plan, metrics: metrics, snapshotter: snapshotter)
     }
 
     func done() {

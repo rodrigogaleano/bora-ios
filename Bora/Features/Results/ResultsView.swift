@@ -22,6 +22,14 @@ struct ResultsView: View {
         }
         .navigationTitle("Results")
         .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Share", systemImage: "square.and.arrow.up") { viewModel.share() }
+            }
+        }
+        .sheet(isPresented: $viewModel.isSharePresented) {
+            ShareView(viewModel: viewModel.makeShareViewModel())
+        }
         .safeAreaInset(edge: .bottom) {
             Button("Done") { viewModel.done() }
                 .buttonStyle(.borderedProminent)

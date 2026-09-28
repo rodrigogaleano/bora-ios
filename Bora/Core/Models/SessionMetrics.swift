@@ -10,6 +10,11 @@ struct SessionMetrics: Hashable {
         var averagePaceSecondsPerKm: Double?
     }
 
+    struct KilometerSplit: Hashable {
+        var distanceMeters: Double
+        var duration: TimeInterval
+    }
+
     var startedAt: Date
     var endedAt: Date?
     var totalDistanceMeters: Double = 0
@@ -17,6 +22,8 @@ struct SessionMetrics: Hashable {
     var averagePaceSecondsPerKm: Double?
     var maxSpeedMetersPerSecond: Double?
     var splits: [BlockSplit] = []
+    var kilometerSplits: [KilometerSplit] = []
+    var route: [RouteCoordinate] = []
     var perceivedExertion: Int?
     var averageHeartRate: Double?
     var maxHeartRate: Double?
@@ -30,6 +37,14 @@ extension SessionMetrics {
         guard distance > 0 else { return nil }
         let duration = effort.reduce(0) { $0 + $1.duration }
         return duration / (distance / 1000)
+    }
+
+    var headlinePaceSecondsPerKm: Double? {
+        effortPaceSecondsPerKm ?? averagePaceSecondsPerKm
+    }
+
+    var headlinePaceTitle: LocalizedStringResource {
+        isIntervalSession ? "Work pace" : "Avg pace"
     }
 
     var isIntervalSession: Bool {

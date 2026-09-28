@@ -37,6 +37,10 @@ struct PlanningViewModelTests {
         #expect(viewModel.sessionPlan.goal == .distance(meters: 1_500, scope: .totalSession))
     }
 
+    @Test func planCarriesTheWorkoutType() {
+        #expect(makeViewModel(.longRun).sessionPlan.workoutType == .longRun)
+    }
+
     @Test func easyRunDefaultsToFortyMinutes() {
         let plan = makeViewModel(.easyRun).sessionPlan
         #expect(plan.goal == .time(2_400))

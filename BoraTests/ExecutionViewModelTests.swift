@@ -150,6 +150,27 @@ struct ExecutionViewModelTests {
         #expect(viewModel.runState == .finished)
     }
 
+    @Test func finishedMetricsCarryKilometerSplitsAndTheRoute() throws {
+        let clock = PreviewClock()
+        var finishedMetrics: SessionMetrics?
+        let viewModel = makeViewModel(plan: SessionPlan(goal: .free), clock: clock, onNext: { finishedMetrics = $0 })
+        viewModel.beginTiming()
+        viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: 0)))
+
+        for step in 1...23 {
+            clock.advance(by: 25)
+            let longitude = Double(step) * 100 / 111_319.49
+            viewModel.recordLocation(LocationSample(coordinate: RouteCoordinate(latitude: 0, longitude: longitude)))
+            viewModel.tick()
+        }
+        viewModel.finish()
+
+        let metrics = try #require(finishedMetrics)
+        #expect(metrics.kilometerSplits.count == 3)
+        #expect(metrics.kilometerSplits[0].duration == 250)
+        #expect(metrics.route.count == 24)
+    }
+
     @Test func freeRunPhaseWithDistanceGoalRunOnlyCompletesWhenDistanceAccumulates() {
         let clock = PreviewClock()
         let plan = SessionPlan(goal: .distance(meters: 100, scope: .runOnly), warmup: nil, hiit: nil, cooldown: nil)
