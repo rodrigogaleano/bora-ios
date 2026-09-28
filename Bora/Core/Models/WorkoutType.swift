@@ -45,3 +45,21 @@ enum WorkoutType: CaseIterable, Hashable {
         }
     }
 }
+
+extension WorkoutType {
+    var defaultCheckpoints: CheckpointConfig {
+        switch self {
+        case .easyRun, .longRun:
+            return CheckpointConfig(isKilometerSplitEnabled: true, isRepSummaryEnabled: false)
+        case .intervals:
+            return CheckpointConfig(isKilometerSplitEnabled: false, isRepSummaryEnabled: true)
+        case .freeRun:
+            return CheckpointConfig(
+                progress: [],
+                isFinalStretchEnabled: false,
+                isKilometerSplitEnabled: true,
+                isRepSummaryEnabled: false
+            )
+        }
+    }
+}

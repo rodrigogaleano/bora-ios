@@ -73,4 +73,30 @@ struct PlanningViewModelTests {
         viewModel.goalKind = .distance
         #expect(viewModel.sessionPlan.goal == .free)
     }
+
+    @Test func longRunCountsKilometersAndIntervalsSummarizeReps() {
+        let longRun = makeViewModel(.longRun).sessionPlan.checkpoints
+        let intervals = makeViewModel(.intervals).sessionPlan.checkpoints
+
+        #expect(longRun.isKilometerSplitEnabled)
+        #expect(!longRun.isRepSummaryEnabled)
+        #expect(!intervals.isKilometerSplitEnabled)
+        #expect(intervals.isRepSummaryEnabled)
+    }
+
+    @Test func progressChoicesReachThePlan() {
+        let viewModel = makeViewModel(.longRun)
+
+        viewModel.setProgressCheckpoint(.quarter, isOn: true)
+        viewModel.setProgressCheckpoint(.half, isOn: false)
+
+        #expect(viewModel.sessionPlan.checkpoints.progress == [.quarter])
+    }
+
+    @Test func freeRunHidesProgressAndOnlyIntervalsShowRepSummary() {
+        #expect(!makeViewModel(.freeRun).showsProgressCheckpoints)
+        #expect(makeViewModel(.easyRun).showsProgressCheckpoints)
+        #expect(makeViewModel(.intervals).showsRepSummary)
+        #expect(!makeViewModel(.longRun).showsRepSummary)
+    }
 }

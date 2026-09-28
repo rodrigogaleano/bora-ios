@@ -7,7 +7,7 @@ extension ExecutionViewModel {
         checkpoints = PhaseCheckpoints(
             phase: currentPhase,
             nextPhase: nextPhase,
-            config: settings.checkpointConfig,
+            config: plan.checkpoints,
             startingAt: PhaseCheckpoints.Progress(
                 elapsed: 0,
                 phaseDistanceMeters: 0,
@@ -42,7 +42,7 @@ extension ExecutionViewModel {
     }
 
     func repRecap() -> RepRecap? {
-        guard settings.checkpointConfig.isRepSummaryEnabled, let currentPhase else { return nil }
+        guard plan.checkpoints.isRepSummaryEnabled, let currentPhase else { return nil }
         return PhasePacer.recap(
             for: currentPhase,
             elapsed: elapsedInPhase,

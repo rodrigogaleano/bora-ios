@@ -53,10 +53,13 @@ final class PlanningViewModel {
     var cooldownDurationSeconds: Double = 300
     var cooldownDistanceMeters: Double = 500
 
+    var checkpoints: CheckpointConfig
+
     init(workoutType: WorkoutType, clock: ClockProviding, onNext: @escaping (SessionPlan) -> Void) {
         self.workoutType = workoutType
         self.clock = clock
         self.onNext = onNext
+        self.checkpoints = workoutType.defaultCheckpoints
         applyDefaults()
     }
 
@@ -69,6 +72,10 @@ final class PlanningViewModel {
     var goalKinds: [GoalKind] { [.distance, .time] }
 
     var showsHIIT: Bool { workoutType == .intervals }
+
+    var showsProgressCheckpoints: Bool { showsGoal || showsHIIT }
+
+    var showsRepSummary: Bool { showsHIIT }
 
     var sessionPlan: SessionPlan {
         SessionPlan(
@@ -84,7 +91,8 @@ final class PlanningViewModel {
                 seconds: cooldownDurationSeconds,
                 meters: cooldownDistanceMeters
             ) : nil,
-            workoutType: workoutType
+            workoutType: workoutType,
+            checkpoints: checkpoints
         )
     }
 
@@ -93,6 +101,14 @@ final class PlanningViewModel {
     func next() {
         guard isValid else { return }
         onNext(sessionPlan)
+    }
+
+    func setProgressCheckpoint(_ checkpoint: ProgressCheckpoint, isOn: Bool) {
+        if isOn {
+            checkpoints.progress.insert(checkpoint)
+        } else {
+            checkpoints.progress.remove(checkpoint)
+        }
     }
 
     private func applyDefaults() {

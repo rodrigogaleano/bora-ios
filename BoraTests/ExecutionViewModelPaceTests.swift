@@ -11,13 +11,13 @@ struct ExecutionViewModelPaceTests {
         let viewModel: ExecutionViewModel
         private var longitude = 0.0
 
-        init(plan: SessionPlan, settings: RunSettings = RunSettings()) {
+        init(plan: SessionPlan) {
             viewModel = ExecutionViewModel(
                 clock: clock,
                 locationProvider: PreviewLocationProvider(delay: .zero),
                 cuePlayer: cuePlayer,
                 runActivity: PreviewRunActivityController(),
-                settings: settings,
+                settings: RunSettings(),
                 plan: plan,
                 route: nil,
                 onNext: { _ in }
@@ -99,9 +99,9 @@ struct ExecutionViewModelPaceTests {
     }
 
     @Test func repSummaryCanBeTurnedOff() {
-        var settings = RunSettings()
-        settings.isRepSummaryEnabled = false
-        let runner = Runner(plan: intervals(work: .duration(60)), settings: settings)
+        var plan = intervals(work: .duration(60))
+        plan.checkpoints.isRepSummaryEnabled = false
+        let runner = Runner(plan: plan)
 
         runner.run(meters: 100, seconds: 20, steps: 3)
 
@@ -131,10 +131,9 @@ struct ExecutionViewModelPaceTests {
     }
 
     @Test func kilometerPaceCountsOnlyThatKilometer() throws {
-        var settings = RunSettings()
-        settings.isKilometerSplitEnabled = true
-        let plan = SessionPlan(goal: .free, warmup: nil, hiit: nil, cooldown: nil)
-        let runner = Runner(plan: plan, settings: settings)
+        var plan = SessionPlan(goal: .free, warmup: nil, hiit: nil, cooldown: nil)
+        plan.checkpoints.isKilometerSplitEnabled = true
+        let runner = Runner(plan: plan)
 
         runner.run(meters: 110, seconds: 20, steps: 10)
         runner.run(meters: 110, seconds: 30, steps: 9)
