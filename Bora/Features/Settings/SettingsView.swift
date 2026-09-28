@@ -11,7 +11,6 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 AudioSection(viewModel: viewModel)
-                CheckpointsSection(viewModel: viewModel)
                 MetronomeSection(viewModel: viewModel)
                 HapticsSection(viewModel: viewModel)
                 GPSSection(viewModel: viewModel)
@@ -38,40 +37,6 @@ private struct AudioSection: View {
             Toggle("Voice cues", isOn: $viewModel.isVoiceCueEnabled)
             Toggle("Beeps", isOn: $viewModel.isBeepEnabled)
         }
-    }
-}
-
-private struct CheckpointsSection: View {
-    @Bindable var viewModel: SettingsViewModel
-
-    var body: some View {
-        Section {
-            Toggle("Transition warning", isOn: $viewModel.isTransitionWarningEnabled)
-            HStack {
-                Text("Progress")
-                Spacer()
-                ForEach(ProgressCheckpoint.allCases, id: \.self) { checkpoint in
-                    Toggle(isOn: binding(for: checkpoint)) {
-                        Text(verbatim: "\(checkpoint.rawValue)%")
-                    }
-                    .toggleStyle(.button)
-                }
-            }
-            Toggle("Final stretch", isOn: $viewModel.isFinalStretchEnabled)
-            Toggle("Kilometer splits", isOn: $viewModel.isKilometerSplitEnabled)
-            Toggle("Rep summary", isOn: $viewModel.isRepSummaryEnabled)
-        } header: {
-            Text("Checkpoints")
-        } footer: {
-            Text("Progress, final stretch, splits and rep summaries play during work blocks and free runs.")
-        }
-    }
-
-    private func binding(for checkpoint: ProgressCheckpoint) -> Binding<Bool> {
-        Binding(
-            get: { viewModel.progressCheckpoints.contains(checkpoint) },
-            set: { viewModel.setProgressCheckpoint(checkpoint, isOn: $0) }
-        )
     }
 }
 

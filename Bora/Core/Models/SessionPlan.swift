@@ -18,6 +18,7 @@ struct SessionPlan: Hashable {
     var hiit: HIITPlan?
     var cooldown: BlockTarget?
     var workoutType: WorkoutType?
+    var checkpoints = CheckpointConfig()
 }
 
 extension SessionPlan {

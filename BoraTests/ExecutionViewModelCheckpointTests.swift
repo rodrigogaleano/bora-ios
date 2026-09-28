@@ -6,15 +6,14 @@ struct ExecutionViewModelCheckpointTests {
     private func makeViewModel(
         plan: SessionPlan,
         clock: PreviewClock,
-        cuePlayer: PreviewRunCuePlayer,
-        settings: RunSettings = RunSettings()
+        cuePlayer: PreviewRunCuePlayer
     ) -> ExecutionViewModel {
         ExecutionViewModel(
             clock: clock,
             locationProvider: PreviewLocationProvider(delay: .zero),
             cuePlayer: cuePlayer,
             runActivity: PreviewRunActivityController(),
-            settings: settings,
+            settings: RunSettings(),
             plan: plan,
             route: nil,
             onNext: { _ in }
@@ -58,10 +57,9 @@ struct ExecutionViewModelCheckpointTests {
     @Test func transitionWarningCanBeTurnedOff() {
         let clock = PreviewClock()
         let cuePlayer = PreviewRunCuePlayer()
-        var settings = RunSettings()
-        settings.isTransitionWarningEnabled = false
-        let plan = SessionPlan(goal: .free, warmup: .duration(15), hiit: nil, cooldown: nil)
-        let viewModel = makeViewModel(plan: plan, clock: clock, cuePlayer: cuePlayer, settings: settings)
+        var plan = SessionPlan(goal: .free, warmup: .duration(15), hiit: nil, cooldown: nil)
+        plan.checkpoints.isTransitionWarningEnabled = false
+        let viewModel = makeViewModel(plan: plan, clock: clock, cuePlayer: cuePlayer)
         viewModel.beginTiming()
 
         clock.advance(by: 8)

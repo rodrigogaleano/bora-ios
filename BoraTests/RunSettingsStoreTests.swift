@@ -26,10 +26,6 @@ struct RunSettingsStoreTests {
         settings.metronomeBPM = 185
         settings.metronomeVolume = 0.15
         settings.gpsAccuracy = .economy
-        settings.isTransitionWarningEnabled = false
-        settings.progressCheckpoints = [.quarter, .ninety]
-        settings.isFinalStretchEnabled = false
-        settings.isKilometerSplitEnabled = true
 
         UserDefaultsRunSettingsStore(defaults: defaults).save(settings)
 
@@ -59,9 +55,20 @@ struct RunSettingsStoreTests {
         #expect(loaded.metronomeBPM == 180)
         #expect(loaded.gpsAccuracy == .balanced)
         #expect(loaded.metronomeVolume == RunSettings().metronomeVolume)
-        #expect(loaded.isTransitionWarningEnabled)
-        #expect(loaded.progressCheckpoints == [.half])
-        #expect(loaded.isFinalStretchEnabled)
-        #expect(!loaded.isKilometerSplitEnabled)
+    }
+
+    @Test func blobWithCheckpointFieldsStillDecodes() {
+        let defaults = makeDefaults()
+        let legacy = """
+        {"isVoiceCueEnabled":false,"metronomeBPM":180,"isTransitionWarningEnabled":false,
+        "progressCheckpoints":[25],"isFinalStretchEnabled":false,"isKilometerSplitEnabled":true,
+        "isRepSummaryEnabled":false}
+        """
+        defaults.set(Data(legacy.utf8), forKey: Self.key)
+
+        let loaded = UserDefaultsRunSettingsStore(defaults: defaults).load()
+
+        #expect(!loaded.isVoiceCueEnabled)
+        #expect(loaded.metronomeBPM == 180)
     }
 }

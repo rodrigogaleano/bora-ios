@@ -17,6 +17,7 @@ struct PlanningView: View {
                 HIITSection(viewModel: viewModel)
             }
             CooldownSection(viewModel: viewModel)
+            CheckpointsSection(viewModel: viewModel)
             HStack {
                 Spacer()
                 Button("Next") { viewModel.next() }
@@ -115,6 +116,44 @@ private struct CooldownSection: View {
                 )
             }
         }
+    }
+}
+
+private struct CheckpointsSection: View {
+    @Bindable var viewModel: PlanningViewModel
+
+    var body: some View {
+        Section {
+            Toggle("Transition warning", isOn: $viewModel.checkpoints.isTransitionWarningEnabled)
+            if viewModel.showsProgressCheckpoints {
+                HStack {
+                    Text("Progress")
+                    Spacer()
+                    ForEach(ProgressCheckpoint.allCases, id: \.self) { checkpoint in
+                        Toggle(isOn: binding(for: checkpoint)) {
+                            Text(verbatim: "\(checkpoint.rawValue)%")
+                        }
+                        .toggleStyle(.button)
+                    }
+                }
+                Toggle("Final stretch", isOn: $viewModel.checkpoints.isFinalStretchEnabled)
+            }
+            Toggle("Kilometer splits", isOn: $viewModel.checkpoints.isKilometerSplitEnabled)
+            if viewModel.showsRepSummary {
+                Toggle("Rep summary", isOn: $viewModel.checkpoints.isRepSummaryEnabled)
+            }
+        } header: {
+            Text("Checkpoints")
+        } footer: {
+            Text("Progress, final stretch, splits and rep summaries play during work blocks and free runs.")
+        }
+    }
+
+    private func binding(for checkpoint: ProgressCheckpoint) -> Binding<Bool> {
+        Binding(
+            get: { viewModel.checkpoints.progress.contains(checkpoint) },
+            set: { viewModel.setProgressCheckpoint(checkpoint, isOn: $0) }
+        )
     }
 }
 
