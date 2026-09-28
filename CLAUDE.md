@@ -24,7 +24,9 @@ App iOS de corrida guiada por áudio.
 
 ## Escopo do MVP
 
-Fora do MVP por decisão explícita: persistência entre sessões, conta de usuário, nuvem/Firebase, templates reutilizáveis, HealthKit, Strava, progressão automática, smartwatch. Isso é direção futura — o modelo de dados deve deixar espaço pra extensão (ex: campos opcionais em métricas de sessão para HR/cadência real), mas não implementar essas features agora nem adicionar abstração especulativa pra elas.
+Fora do MVP por decisão explícita: histórico de sessões, conta de usuário, nuvem/Firebase, templates reutilizáveis, HealthKit, Strava, progressão automática, smartwatch. Isso é direção futura — o modelo de dados deve deixar espaço pra extensão (ex: campos opcionais em métricas de sessão para HR/cadência real), mas não implementar essas features agora nem adicionar abstração especulativa pra elas.
+
+Guardar no aparelho os settings e o último treino de cada tipo é permitido; histórico e templates continuam fora.
 
 Sem identidade visual ainda — só componentes/cores padrão do sistema iOS/SwiftUI.
 

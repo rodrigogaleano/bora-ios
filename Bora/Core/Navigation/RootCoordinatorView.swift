@@ -23,6 +23,7 @@ struct RootCoordinatorView: View {
                         viewModel: PlanningViewModel(
                             workoutType: workoutType,
                             clock: dependencies.clock,
+                            lastWorkouts: dependencies.lastWorkoutStore,
                             onNext: { plan in coordinator.push(.summary(plan)) }
                         )
                     )

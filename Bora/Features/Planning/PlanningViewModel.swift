@@ -27,6 +27,7 @@ final class PlanningViewModel {
 
     let workoutType: WorkoutType
     private let clock: ClockProviding
+    private let lastWorkouts: LastWorkoutStoring
     private let onNext: (SessionPlan) -> Void
 
     var goalKind: GoalKind = .distance
@@ -55,12 +56,21 @@ final class PlanningViewModel {
 
     var checkpoints: CheckpointConfig
 
-    init(workoutType: WorkoutType, clock: ClockProviding, onNext: @escaping (SessionPlan) -> Void) {
+    init(
+        workoutType: WorkoutType,
+        clock: ClockProviding,
+        lastWorkouts: LastWorkoutStoring,
+        onNext: @escaping (SessionPlan) -> Void
+    ) {
         self.workoutType = workoutType
         self.clock = clock
+        self.lastWorkouts = lastWorkouts
         self.onNext = onNext
         self.checkpoints = workoutType.defaultCheckpoints
         applyDefaults()
+        if let saved = lastWorkouts.load(workoutType) {
+            apply(saved)
+        }
     }
 
     var title: String { workoutType.title }
@@ -100,6 +110,7 @@ final class PlanningViewModel {
 
     func next() {
         guard isValid else { return }
+        lastWorkouts.save(sessionPlan)
         onNext(sessionPlan)
     }
 
@@ -133,6 +144,70 @@ final class PlanningViewModel {
             cooldownDurationSeconds = 600
         case .freeRun:
             goalKind = .free
+        }
+    }
+
+    private func apply(_ plan: SessionPlan) {
+        switch plan.goal {
+        case .distance(let meters, let scope):
+            goalKind = .distance
+            goalDistanceMeters = meters
+            goalDistanceScope = scope
+        case .time(let seconds):
+            goalKind = .time
+            goalDurationSeconds = seconds
+        case .free:
+            goalKind = .free
+        }
+
+        isWarmupEnabled = plan.warmup != nil
+        if let warmup = plan.warmup {
+            Self.unpack(warmup, kind: &warmupKind, seconds: &warmupDurationSeconds, meters: &warmupDistanceMeters)
+        }
+
+        isHIITEnabled = plan.hiit != nil
+        if let hiit = plan.hiit {
+            hiitSets = hiit.sets
+            Self.unpack(
+                hiit.work,
+                kind: &hiitWorkKind,
+                seconds: &hiitWorkDurationSeconds,
+                meters: &hiitWorkDistanceMeters
+            )
+            Self.unpack(
+                hiit.rest,
+                kind: &hiitRestKind,
+                seconds: &hiitRestDurationSeconds,
+                meters: &hiitRestDistanceMeters
+            )
+        }
+
+        isCooldownEnabled = plan.cooldown != nil
+        if let cooldown = plan.cooldown {
+            Self.unpack(
+                cooldown,
+                kind: &cooldownKind,
+                seconds: &cooldownDurationSeconds,
+                meters: &cooldownDistanceMeters
+            )
+        }
+
+        checkpoints = plan.checkpoints
+    }
+
+    private static func unpack(
+        _ target: BlockTarget,
+        kind: inout TargetKind,
+        seconds: inout Double,
+        meters: inout Double
+    ) {
+        switch target {
+        case .duration(let value):
+            kind = .duration
+            seconds = value
+        case .distance(let value):
+            kind = .distance
+            meters = value
         }
     }
 

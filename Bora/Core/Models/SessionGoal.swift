@@ -1,11 +1,11 @@
 import Foundation
 
-enum DistanceScope: Hashable {
+enum DistanceScope: Codable, Hashable {
     case totalSession
     case runOnly
 }
 
-enum SessionGoal: Hashable {
+enum SessionGoal: Codable, Hashable {
     case distance(meters: Double, scope: DistanceScope)
     case time(TimeInterval)
     case free

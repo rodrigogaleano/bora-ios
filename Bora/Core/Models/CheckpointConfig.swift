@@ -1,6 +1,6 @@
 import Foundation
 
-struct CheckpointConfig: Hashable {
+struct CheckpointConfig: Codable, Hashable {
     var isTransitionWarningEnabled = true
     var progress: Set<ProgressCheckpoint> = [.half]
     var isFinalStretchEnabled = true
