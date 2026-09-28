@@ -597,6 +597,7 @@
 				INFOPLIST_FILE = Support/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Usamos sua localização em segundo plano para continuar registrando sua corrida mesmo com a tela bloqueada ou o app minimizado.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos sua localização para centralizar o mapa e sugerir o ponto de partida da sua rota.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Usamos acesso às suas fotos para salvar a imagem do seu treino.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -644,6 +645,7 @@
 				INFOPLIST_FILE = Support/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Usamos sua localização em segundo plano para continuar registrando sua corrida mesmo com a tela bloqueada ou o app minimizado.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos sua localização para centralizar o mapa e sugerir o ponto de partida da sua rota.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Usamos acesso às suas fotos para salvar a imagem do seu treino.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

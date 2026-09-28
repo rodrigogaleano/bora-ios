@@ -19,4 +19,8 @@ enum SessionPlanFormatting {
             return String(localized: "Free session")
         }
     }
+
+    static func workoutName(for plan: SessionPlan) -> String {
+        plan.workoutType?.title ?? title(for: plan)
+    }
 }

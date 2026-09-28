@@ -13,9 +13,9 @@ final class ExecutionViewModel {
 
     private let clock: ClockProviding
     private let locationProvider: LocationProviding
-    private let cuePlayer: RunCueProviding
+    let cuePlayer: RunCueProviding
     private let runActivity: RunActivityProviding
-    private let settings: RunSettings
+    let settings: RunSettings
     let plan: SessionPlan
     let plannedRoute: PlannedRoute?
     private let onNext: (SessionMetrics) -> Void
@@ -23,8 +23,9 @@ final class ExecutionViewModel {
     private let phases: [RunPhase]
     private(set) var currentPhaseIndex = 0
     private(set) var runState: RunState = .running
-    private var checkpoints: PhaseCheckpoints?
-    private var pacer = PhasePacer()
+    var checkpoints: PhaseCheckpoints?
+    var pacer = PhasePacer()
+    private var kilometerRecorder = KilometerSplitRecorder()
 
     private var sessionStartedAt: Date?
     private var phaseStartedAt: Date?
@@ -97,6 +98,11 @@ final class ExecutionViewModel {
     }
 
     var isGPSSignalLost: Bool { gpsSignal?.isLost ?? false }
+
+    private var runningElapsedTotal: TimeInterval {
+        guard let sessionStartedAt else { return 0 }
+        return clock.now.timeIntervalSince(sessionStartedAt) - pausedAccumulatedSeconds
+    }
 
     var isShowingUpcomingTransitionBanner: Bool {
         guard let remaining = remainingInPhase else { return false }
@@ -201,6 +207,7 @@ final class ExecutionViewModel {
             let delta = last.clLocation.distance(from: coordinate.clLocation)
             totalDistanceMeters += delta
             phaseDistanceMeters += delta
+            kilometerRecorder.record(totalMeters: totalDistanceMeters, elapsed: runningElapsedTotal)
             if elapsedSinceLastFix > 0 {
                 currentSpeedMetersPerSecond = delta / elapsedSinceLastFix
                 maxSpeedMetersPerSecond = max(maxSpeedMetersPerSecond, currentSpeedMetersPerSecond)
@@ -266,7 +273,9 @@ final class ExecutionViewModel {
             totalDuration: elapsedTotal,
             averagePaceSecondsPerKm: averagePace,
             maxSpeedMetersPerSecond: maxSpeedMetersPerSecond,
-            splits: splits
+            splits: splits,
+            kilometerSplits: kilometerRecorder.splits(totalMeters: totalDistanceMeters, elapsed: elapsedTotal),
+            route: traveledPath
         )
         let finalPace = metrics.effortPaceSecondsPerKm.map {
             FinalPace(secondsPerKm: $0, isRepsOnly: metrics.isIntervalSession)
@@ -276,60 +285,6 @@ final class ExecutionViewModel {
         cuePlayer.teardown()
         endActivity(metrics: metrics)
         onNext(metrics)
-    }
-}
-
-// MARK: - Cues
-
-private extension ExecutionViewModel {
-    func announceCurrentPhase(recap: RepRecap? = nil) {
-        guard let currentPhase else { return }
-        pacer = PhasePacer()
-        checkpoints = PhaseCheckpoints(
-            phase: currentPhase,
-            nextPhase: nextPhase,
-            config: settings.checkpointConfig,
-            startingAt: PhaseCheckpoints.Progress(
-                elapsed: 0,
-                phaseDistanceMeters: 0,
-                sessionDistanceMeters: totalDistanceMeters
-            )
-        )
-        cuePlayer.play(.phaseStarted(currentPhase.kind.displayName, recap: recap))
-        startMetronomeIfNeeded()
-    }
-
-    /// The metronome is a cadence guide, so it stays quiet while the runner is resting.
-    func startMetronomeIfNeeded() {
-        guard settings.isMetronomeEnabled, runState == .running, let currentPhase else { return }
-        if case .rest = currentPhase.kind {
-            cuePlayer.stopMetronome()
-            return
-        }
-        cuePlayer.startMetronome(bpm: settings.metronomeBPM)
-    }
-
-    func playCheckpointIfReached() {
-        let progress = PhaseCheckpoints.Progress(
-            elapsed: elapsedInPhase,
-            phaseDistanceMeters: phaseDistanceMeters,
-            sessionDistanceMeters: totalDistanceMeters
-        )
-        if let cue = checkpoints?.cue(for: progress) {
-            cuePlayer.play(
-                pacer.pacing(cue, elapsed: elapsedInPhase, meters: phaseDistanceMeters, isSignalLost: isGPSSignalLost)
-            )
-        }
-    }
-
-    func repRecap() -> RepRecap? {
-        guard settings.checkpointConfig.isRepSummaryEnabled, let currentPhase else { return nil }
-        return PhasePacer.recap(
-            for: currentPhase,
-            elapsed: elapsedInPhase,
-            meters: phaseDistanceMeters,
-            isSignalLost: isGPSSignalLost
-        )
     }
 }
 

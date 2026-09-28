@@ -54,13 +54,15 @@ struct RootCoordinatorView: View {
                             settings: dependencies.settingsStore.load(),
                             plan: plan,
                             route: route,
-                            onNext: { metrics in coordinator.push(.results(metrics)) }
+                            onNext: { metrics in coordinator.push(.results(plan, metrics)) }
                         )
                     )
-                case .results(let metrics):
+                case .results(let plan, let metrics):
                     ResultsView(
                         viewModel: ResultsViewModel(
+                            plan: plan,
                             metrics: metrics,
+                            snapshotter: dependencies.routeSnapshotter,
                             onDone: { coordinator.popToRoot() }
                         )
                     )

@@ -25,7 +25,12 @@ struct ResultsViewModelTests {
         metrics: SessionMetrics,
         onDone: @escaping () -> Void = {}
     ) -> ResultsViewModel {
-        ResultsViewModel(metrics: metrics, onDone: onDone)
+        ResultsViewModel(
+            plan: SessionPlan(goal: .free),
+            metrics: metrics,
+            snapshotter: PreviewRouteSnapshotter(),
+            onDone: onDone
+        )
     }
 
     @Test func splitRowsPreserveOrderAndCountWithUniqueIdentifiers() {

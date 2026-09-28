@@ -6,13 +6,15 @@ struct AppDependencies {
     let settingsStore: RunSettingsStoring
     let cuePlayer: RunCueProviding
     let runActivity: RunActivityProviding
+    let routeSnapshotter: RouteSnapshotProviding
 
     static let live = AppDependencies(
         clock: SystemClock(),
         locationProvider: SystemLocationProvider(),
         settingsStore: UserDefaultsRunSettingsStore(),
         cuePlayer: SystemRunCuePlayer(),
-        runActivity: SystemRunActivityController()
+        runActivity: SystemRunActivityController(),
+        routeSnapshotter: MapKitRouteSnapshotter()
     )
 
     static let preview = AppDependencies(
@@ -20,6 +22,7 @@ struct AppDependencies {
         locationProvider: PreviewLocationProvider(),
         settingsStore: PreviewRunSettingsStore(),
         cuePlayer: PreviewRunCuePlayer(),
-        runActivity: PreviewRunActivityController()
+        runActivity: PreviewRunActivityController(),
+        routeSnapshotter: PreviewRouteSnapshotter()
     )
 }
